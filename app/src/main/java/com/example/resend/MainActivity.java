@@ -10,37 +10,36 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView titlepage, subtitlepage, login, signup;
+    TextView titlePage, subtitlePage, login, signUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //pull textviews
-        titlepage = findViewById(R.id.titlepage);
-        subtitlepage = findViewById(R.id.subtitlepage);
+        // pull text views
+        titlePage = findViewById(R.id.titlepage);
+        subtitlePage = findViewById(R.id.subtitlepage);
         login = findViewById(R.id.login);
-        signup = findViewById(R.id.signup_hint);
+        signUp = findViewById(R.id.signup_hint);
 
-        //import font
+        // import font
         Typeface MLight = Typeface.createFromAsset(getAssets(), "font/MLight.ttf");
         Typeface MMedium = Typeface.createFromAsset(getAssets(), "font/MMedium.ttf");
         Typeface MRegular = Typeface.createFromAsset(getAssets(), "font/MRegular.ttf");
 
         // apply font
-        titlepage.setTypeface(MRegular);
-        subtitlepage.setTypeface(MLight);
+        titlePage.setTypeface(MRegular);
+        subtitlePage.setTypeface(MLight);
         login.setTypeface(MMedium);
 
-        signup.setOnClickListener(new View.OnClickListener() {
+        signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View v) {
                 Intent i = new Intent(MainActivity.this, signupActivity.class);
                 startActivity(i);
 
             }
-
         });
 
 
