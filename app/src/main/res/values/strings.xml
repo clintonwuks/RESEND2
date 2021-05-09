@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">RESEND</string>
+    <string name="signup_hint">Don\'t have an account ? Sign Up</string>
+    <string name="log_in">LOGIN</string>
+    <string name="register">SIGN UP</string>
+    <string name="passcode">Enter Passcode</string>
+    <string name="passcode2">Re-enter Passcode</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="enter_fullname">Last Name\t\t\t\t\t Other Names</string>
+
+</resources>
