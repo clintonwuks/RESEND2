@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // pull text views
-        titlePage = findViewById(R.id.titlepage);
-        subtitlePage = findViewById(R.id.subtitlepage);
+        titlePage = findViewById(R.id.titlePage);
+        subtitlePage = findViewById(R.id.subtitlePage);
         login = findViewById(R.id.login);
         signUp = findViewById(R.id.signup_hint);
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View v) {
-                Intent i = new Intent(MainActivity.this, signupActivity.class);
+                Intent i = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(i);
 
             }

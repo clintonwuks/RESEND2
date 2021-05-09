@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".signupActivity">
+    tools:context=".SignUpActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -17,10 +17,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        android:contentDescription="@string/bg_img_description" />
 
     <TextView
-        android:id="@+id/titlepage"
+        android:id="@+id/titlePage"
         android:text="@string/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,8 +36,8 @@
         />
 
     <TextView
-        android:id="@+id/subtitlepage"
-        android:text="Welcome To RESEND"
+        android:id="@+id/subtitlePage"
+        android:text="@string/sign_up_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -49,11 +49,11 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlepage"
+        app:layout_constraintTop_toBottomOf="@+id/titlePage"
         />
 
     <View
-        android:id="@+id/thisview"
+        android:id="@+id/signUpForm"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginEnd="24dp"
@@ -63,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintTop_toBottomOf="@+id/subtitlepage"
+        app:layout_constraintTop_toBottomOf="@+id/subtitlePage"
         />
 
 
@@ -79,16 +79,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subtitlepage" />
+        app:layout_constraintTop_toBottomOf="@+id/subtitlePage" />
 
     <EditText
-        android:id="@+id/fullname"
+        android:id="@+id/fullName"
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:hint="@string/enter_fullname"
+        android:hint="@string/enter_full_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,51 +107,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fullname"
+        app:layout_constraintTop_toBottomOf="@+id/fullName"
         android:inputType="text"
         android:autofillHints="Full Name" />
 
-    <!--    <DatePicker-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:datePickerMode="spinner"-->
-<!--        android:calendarViewShown="false"-->
-<!--        android:layout_marginStart="24dp"-->
-<!--        android:layout_marginTop="4dp"-->
-<!--        android:layout_marginEnd="24sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.496"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/fullname" />-->
-
-    <TextView
-        android:id="@+id/dob"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:text="D.O.B"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/date_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
-
-    <Button
-        android:id="@+id/date_button"
+    <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:calendarViewShown="false"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="24dp"
-        android:text="Pick Date"
-        android:textColor="#070707"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.866"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/fullName" />
 
     <EditText
         android:id="@+id/password"
@@ -164,7 +134,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_button"
+        app:layout_constraintTop_toBottomOf="@+id/username"
         android:autofillHints="Password"
         android:inputType="numberPassword" />
 
@@ -175,7 +145,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="24dp"
-        android:hint="@string/passcode2"
+        android:hint="@string/passcode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

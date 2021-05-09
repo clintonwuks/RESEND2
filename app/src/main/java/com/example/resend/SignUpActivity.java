@@ -12,14 +12,14 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
-public class signupActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     TextView dob;
     Button pick_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_sign_up);
 
         Intent intent = getIntent();
 
@@ -36,7 +36,7 @@ public class signupActivity extends AppCompatActivity {
                 int mMonth = c.get(Calendar.MONTH); // current month
                 int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
                 // date picker dialog
-                datePickerDialog[0] = new DatePickerDialog(signupActivity.this,
+                datePickerDialog[0] = new DatePickerDialog(SignUpActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
 
                             @Override
