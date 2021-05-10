@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="editText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">#00FF00</item>
+        <item name="android:layout_height">58dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
+        <item name="android:layout_marginTop">52dp</item>
+    </style>
+    <style name="authButton" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginTop">110dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/authBtnColor</item>
+    </style>
+</resources>
