@@ -10,5 +10,6 @@
     <string name="homepage">HomePage</string>
     <string name="bg_img_description">bgImage</string>
     <string name="sign_up_title">Welcome To RESEND</string>
+    <string name="welcome_back">Welcome Back,</string>
 
 </resources>
