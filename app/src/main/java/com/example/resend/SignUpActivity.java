@@ -5,25 +5,37 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.example.resend.models.User;
+
+import org.w3c.dom.Text;
+
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 
 public class SignUpActivity extends AppCompatActivity {
     TextView dob;
     Button pick_date;
+    TextView fullNameTV;
+    TextView usernameTV;
+    DatePicker dateOfBirthDT;
+    TextView passwordTV;
+    TextView passwordVerificationTV;
+    Button registerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        initElements();
 
-        Intent intent = getIntent();
-
-        dob = findViewById(R.id.dob);
+        /*dob = findViewById(R.id.dob);
         pick_date = (Button) findViewById(R.id.date_button);
         final DatePickerDialog[] datePickerDialog = new DatePickerDialog[1];
 
@@ -43,14 +55,63 @@ public class SignUpActivity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 // set day of month , month and year value in the edit text
-                                dob.setText("D.O.B: " + dayOfMonth + "/"
-                                        + (monthOfYear + 1) + "/" + year);
+                                dob.setText(
+                                    getString(
+                                        R.string.format_dob,
+                                        dayOfMonth,
+                                        monthOfYear + 1,
+                                        year
+                                    )
+                                );
 
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog[0].show();
             }
-        });
+        });*/
 
+    }
+
+    public void initElements() {
+        this.fullNameTV = findViewById(R.id.fullName);
+        this.usernameTV = findViewById(R.id.username);
+        this.dateOfBirthDT = findViewById(R.id.date_of_birth);
+        this.passwordTV = findViewById(R.id.password);
+        this.passwordVerificationTV = findViewById(R.id.password_repeat);
+        this.registerBtn = findViewById(R.id.register_button);
+
+        registerBtn.setOnClickListener(register());
+    }
+
+    public View.OnClickListener register() {
+        return v -> {
+            if (verifyPassword()) {
+                User user = new User(
+                        fullNameTV.getText().toString(),
+                        usernameTV.getText().toString(),
+                        getDate(),
+                        passwordTV.getText().toString()
+                );
+
+                Log.v("APP_TEST", user.toString());
+            }else {
+                Log.v("APP_TEST", "Password does not match");
+            }
+        };
+    }
+
+    public Boolean verifyPassword() {
+        String password = passwordTV.getText().toString();
+        String verifyPassword = passwordVerificationTV.getText().toString();
+
+        return password.equals(verifyPassword);
+    }
+
+    public LocalDate getDate() {
+        return LocalDate.of(
+                dateOfBirthDT.getYear(),
+                dateOfBirthDT.getMonth(),
+                dateOfBirthDT.getDayOfMonth()
+        );
     }
 }

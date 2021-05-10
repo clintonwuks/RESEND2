@@ -112,6 +112,7 @@
         android:autofillHints="Full Name" />
 
     <DatePicker
+        android:id="@+id/date_of_birth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
@@ -154,7 +155,7 @@
         android:inputType="numberPassword" />
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
