@@ -21,13 +21,13 @@ import java.util.Date;
 
 public class SignUpActivity extends AppCompatActivity {
     TextView dob;
-    Button pick_date;
+    Button pickDateBtn;
     TextView fullNameTV;
     TextView usernameTV;
-    DatePicker dateOfBirthDT;
     TextView passwordTV;
     TextView passwordVerificationTV;
     Button registerBtn;
+    LocalDate selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +75,11 @@ public class SignUpActivity extends AppCompatActivity {
     public void initElements() {
         this.fullNameTV = findViewById(R.id.fullName);
         this.usernameTV = findViewById(R.id.username);
-        this.dateOfBirthDT = findViewById(R.id.date_of_birth);
+        this.pickDateBtn = findViewById(R.id.date_button);
         this.passwordTV = findViewById(R.id.password);
         this.passwordVerificationTV = findViewById(R.id.password_repeat);
         this.registerBtn = findViewById(R.id.register_button);
+        this.selectedDate = LocalDate.of(2020, 07, 23);
 
         registerBtn.setOnClickListener(register());
     }
@@ -89,7 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
                 User user = new User(
                         fullNameTV.getText().toString(),
                         usernameTV.getText().toString(),
-                        getDate(),
+                        LocalDate.now(),
                         passwordTV.getText().toString()
                 );
 
@@ -107,11 +108,13 @@ public class SignUpActivity extends AppCompatActivity {
         return password.equals(verifyPassword);
     }
 
+
     public LocalDate getDate() {
-        return LocalDate.of(
+        /*return LocalDate.of(
                 dateOfBirthDT.getYear(),
                 dateOfBirthDT.getMonth(),
                 dateOfBirthDT.getDayOfMonth()
-        );
+        );*/
+        return null;
     }
 }
