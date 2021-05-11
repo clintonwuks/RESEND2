@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,6 +19,10 @@ public class MainActivity extends AppCompatActivity {
 
     TextView titlePage, subtitlePage, login, signUp;
 
+    EditText usernameEDT;
+    EditText passwordEDT;
+    Button loginBTN;
+
     private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth;
     private final String TAG = "APP_TEST";
@@ -24,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initElements();
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
@@ -57,6 +65,31 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void initElements() {
+        usernameEDT = findViewById(R.id.username);
+        passwordEDT = findViewById(R.id.password);
+        loginBTN = findViewById(R.id.login_button);
+        loginBTN.setOnClickListener(v -> login());
+    }
+
+    private void login() {
+        Log.v(TAG, "Button clicked");
+        String domain = getString(R.string.domain);
+        String username = usernameEDT.getText().toString();
+        String email = username.concat("@").concat(domain);
+        String password = passwordEDT.getText().toString();
+
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        gotoHomepage();
+                        Log.d(TAG, "signInWithEmail:success");
+                    }else {
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                    }
+                });
     }
 
     private void gotoHomepage() {

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.resend.models.User;
@@ -20,10 +21,10 @@ import java.time.LocalDate;
 public class SignUpActivity extends AppCompatActivity {
     TextView dobTV;
     Button pickDateBtn;
-    TextView fullNameTV;
-    TextView usernameTV;
-    TextView passwordTV;
-    TextView passwordVerificationTV;
+    EditText fullNameEDT;
+    EditText usernameEDT;
+    EditText passwordEDT;
+    EditText passwordVerificationEDT;
     Button registerBtn;
 
 
@@ -50,13 +51,13 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void initElements() {
-        fullNameTV = findViewById(R.id.fullName);
-        usernameTV = findViewById(R.id.username);
+        fullNameEDT = findViewById(R.id.fullName);
+        usernameEDT = findViewById(R.id.username);
         dobTV = findViewById(R.id.dob);
         pickDateBtn = findViewById(R.id.date_button);
-        passwordTV = findViewById(R.id.password);
-        passwordVerificationTV = findViewById(R.id.password_repeat);
-        registerBtn = findViewById(R.id.register_button);
+        passwordEDT = findViewById(R.id.password);
+        passwordVerificationEDT = findViewById(R.id.password_repeat);
+        registerBtn = findViewById(R.id.login_button);
         selectedDate = LocalDate.now();
         datePickerDialog = new DatePickerDialog(SignUpActivity.this,
                 (view, year, monthOfYear, dayOfMonth) -> {
@@ -100,18 +101,18 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private Boolean verifyPassword() {
-        String password = passwordTV.getText().toString();
-        String verifyPassword = passwordVerificationTV.getText().toString();
+        String password = passwordEDT.getText().toString();
+        String verifyPassword = passwordVerificationEDT.getText().toString();
 
         return password.equals(verifyPassword);
     }
 
     private User initUser() {
         return new User(
-                fullNameTV.getText().toString(),
-                usernameTV.getText().toString(),
+                fullNameEDT.getText().toString(),
+                usernameEDT.getText().toString(),
                 selectedDate,
-                passwordTV.getText().toString()
+                passwordEDT.getText().toString()
         );
     }
 

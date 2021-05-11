@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,7 @@ public class HomepageActivity extends AppCompatActivity {
     }
 
     private void logout() {
+        Log.v(TAG, "Clicked logout");
         firebaseAuth.signOut();
 
         Intent intent = new Intent(this, MainActivity.class);
