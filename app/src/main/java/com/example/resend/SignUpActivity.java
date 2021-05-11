@@ -80,6 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void register() {
+        // Todo start screen loader here
         if (verifyPassword()) {
             User user = initUser();
             String domain = getString(R.string.domain);
@@ -93,10 +94,13 @@ public class SignUpActivity extends AppCompatActivity {
                         } else {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Log.v(TAG, "Registration failed");
+
+                            // Todo end screen loader here
                         }
                     });
         }else {
             Log.v(TAG, "Password does not match");
+            // Todo end screen loader here
         }
     }
 
@@ -117,22 +121,28 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void saveUserDetails(User user) {
-        String uuid = firebaseAuth.getCurrentUser().getUid();
-        final FireStoreUser frUser = new FireStoreUser(
-                uuid,
-                user.fullName,
-                user.username,
-                user.dateOfBirth.toString()
-        );
+        FirebaseUser loggedInUser = firebaseAuth.getCurrentUser();
+        if (loggedInUser != null) {
+            String uuid = firebaseAuth.getCurrentUser().getUid();
+            final FireStoreUser frUser = new FireStoreUser(
+                    uuid,
+                    user.fullName,
+                    user.username,
+                    user.dateOfBirth.toString()
+            );
 
-        db.collection("Users").add(frUser)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    gotoHomepage();
-                })
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error adding document", e);
-                });
+            db.collection("Users").add(frUser)
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        gotoHomepage();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w(TAG, "Error adding document", e);
+                        // Todo End screen loader here
+                    });
+        }else{
+            Log.v(TAG, "Error getting logged in user");
+        }
     }
 
     private void gotoHomepage() {
