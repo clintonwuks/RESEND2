@@ -1,0 +1,153 @@
+package com.example.resend;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.example.resend.models.User;
+import com.example.resend.models.firestore.FireStoreUser;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.time.LocalDate;
+
+public class SignUpActivity extends AppCompatActivity {
+    TextView dobTV;
+    Button pickDateBtn;
+    EditText fullNameEDT;
+    EditText usernameEDT;
+    EditText passwordEDT;
+    EditText passwordVerificationEDT;
+    Button registerBtn;
+
+
+    LocalDate selectedDate;
+    DatePickerDialog datePickerDialog;
+    private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
+    private final String TAG = "APP_TEST";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_up);
+        initElements();
+
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            gotoHomepage();
+        }
+
+        pickDateBtn.setOnClickListener(v -> datePickerDialog.show());
+    }
+
+    public void initElements() {
+        fullNameEDT = findViewById(R.id.fullName);
+        usernameEDT = findViewById(R.id.username);
+        dobTV = findViewById(R.id.dob);
+        pickDateBtn = findViewById(R.id.date_button);
+        passwordEDT = findViewById(R.id.password);
+        passwordVerificationEDT = findViewById(R.id.password_repeat);
+        registerBtn = findViewById(R.id.login_button);
+        selectedDate = LocalDate.now();
+        datePickerDialog = new DatePickerDialog(SignUpActivity.this,
+                (view, year, monthOfYear, dayOfMonth) -> {
+                    // set day of month , month and year value in the edit text
+                    dobTV.setText(
+                            getString(
+                                    R.string.format_dob,
+                                    dayOfMonth,
+                                    monthOfYear + 1,
+                                    year
+                            )
+                    );
+
+                },
+                selectedDate.getYear(),
+                selectedDate.getMonthValue(),
+                selectedDate.getDayOfMonth());
+
+        registerBtn.setOnClickListener(v -> register());
+    }
+
+    public void register() {
+        // Todo start screen loader here
+        if (verifyPassword()) {
+            User user = initUser();
+            String domain = getString(R.string.domain);
+            String email = user.username.concat("@").concat(domain);
+
+
+            firebaseAuth.createUserWithEmailAndPassword(email, user.password)
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            saveUserDetails(user);
+                        } else {
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Log.v(TAG, "Registration failed");
+
+                            // Todo end screen loader here
+                        }
+                    });
+        }else {
+            Log.v(TAG, "Password does not match");
+            // Todo end screen loader here
+        }
+    }
+
+    private Boolean verifyPassword() {
+        String password = passwordEDT.getText().toString();
+        String verifyPassword = passwordVerificationEDT.getText().toString();
+
+        return password.equals(verifyPassword);
+    }
+
+    private User initUser() {
+        return new User(
+                fullNameEDT.getText().toString(),
+                usernameEDT.getText().toString(),
+                selectedDate,
+                passwordEDT.getText().toString()
+        );
+    }
+
+    private void saveUserDetails(User user) {
+        FirebaseUser loggedInUser = firebaseAuth.getCurrentUser();
+        if (loggedInUser != null) {
+            String uuid = firebaseAuth.getCurrentUser().getUid();
+            final FireStoreUser frUser = new FireStoreUser(
+                    uuid,
+                    user.fullName,
+                    user.username,
+                    user.dateOfBirth.toString()
+            );
+
+            db.collection("Users").add(frUser)
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        gotoHomepage();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w(TAG, "Error adding document", e);
+                        // Todo End screen loader here
+                    });
+        }else{
+            Log.v(TAG, "Error getting logged in user");
+        }
+    }
+
+    private void gotoHomepage() {
+        Intent intent = new Intent(this, HomepageActivity.class);
+        startActivity(intent);
+        finishAffinity();
+    }
+}

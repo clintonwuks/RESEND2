@@ -20,7 +20,7 @@
         />
 
     <TextView
-        android:id="@+id/titlepage"
+        android:id="@+id/titlePage"
         android:text="@string/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,8 +36,8 @@
         />
 
     <TextView
-        android:id="@+id/subtitlepage"
-        android:text="Welcome Back, "
+        android:id="@+id/subtitlePage"
+        android:text="@string/welcome_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -49,12 +49,12 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlepage"
+        app:layout_constraintTop_toBottomOf="@+id/titlePage"
         />
 
 
     <View
-        android:id="@+id/thisview"
+        android:id="@+id/signUpForm"
         android:layout_width="match_parent"
         android:layout_height="320dp"
         android:layout_marginStart="24dp"
@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subtitlepage"
+        app:layout_constraintTop_toBottomOf="@+id/subtitlePage"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -76,18 +76,15 @@
         android:gravity="center"
         android:text="@string/log_in"
         android:textAllCaps="true"
-        android:textSize="24dp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subtitlepage" />
+        app:layout_constraintTop_toBottomOf="@+id/subtitlePage" />
 
     <EditText
         android:id="@+id/username"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
+        style="@style/editText"
         android:layout_marginTop="24dp"
         android:hint="@string/enter_username"
         app:layout_constraintEnd_toEndOf="parent"
@@ -99,11 +96,7 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="24dp"
+        style="@style/editText"
         android:hint="@string/passcode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -114,13 +107,9 @@
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        style="@style/authButton"
         android:background="@drawable/button_gradient"
-        android:gravity="center"
         android:text="@string/log_in"
-        android:textColor="#7CBAF5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
@@ -131,13 +120,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="104dp"
         android:lineSpacingExtra="6dp"
-        android:text="@string/signup_hint"
+        android:text="@string/sign_up_hint"
         android:textAlignment="center"
         android:textColor="#7CBAF5"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/thisview" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpForm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

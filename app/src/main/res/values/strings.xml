@@ -1,11 +1,19 @@
 <resources>
     <string name="app_name">RESEND</string>
-    <string name="signup_hint">Don\'t have an account ? Sign Up</string>
+    <string name="domain">resend.com</string>
+    <string name="sign_up_hint">Don\'t have an account ? Sign Up</string>
     <string name="log_in">LOGIN</string>
     <string name="register">SIGN UP</string>
     <string name="passcode">Enter Passcode</string>
-    <string name="passcode2">Re-enter Passcode</string>
+    <string name="verify_passcode">Re-enter Passcode</string>
     <string name="enter_username">Enter Username</string>
-    <string name="enter_fullname">Last Name\t\t\t\t\t Other Names</string>
-
+    <string name="enter_full_name">Last Name\t\t\t\t\t Other Names</string>
+    <string name="homepage">HomePage</string>
+    <string name="bg_img_description">bgImage</string>
+    <string name="sign_up_title">Welcome To RESEND</string>
+    <string name="welcome_back">Welcome Back,</string>
+    <string name="format_dob">D.O.B: %1$d/%2$d/%3$d</string>
+    <string name="dob">D.O.B</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="logout_btn">Logout</string>
 </resources>
