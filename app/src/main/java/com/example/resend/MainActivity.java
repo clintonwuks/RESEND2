@@ -8,14 +8,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView titlePage, subtitlePage, login, signUp;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
+    private final String TAG = "APP_TEST";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            gotoHomepage();
+        }
 
         // pull text views
         titlePage = findViewById(R.id.titlePage);
@@ -43,5 +57,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void gotoHomepage() {
+        Intent intent = new Intent(this, HomepageActivity.class);
+        startActivity(intent);
+        finishAffinity();
     }
 }
