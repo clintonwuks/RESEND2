@@ -19,8 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.LocalDate;
 
 public class SignUpActivity extends AppCompatActivity {
-    TextView dobTV;
-    Button pickDateBtn;
+    EditText dobTV;
+   // EditText pickDateBtn;
     EditText fullNameEDT;
     EditText usernameEDT;
     EditText passwordEDT;
@@ -47,14 +47,14 @@ public class SignUpActivity extends AppCompatActivity {
             gotoHomepage();
         }
 
-        pickDateBtn.setOnClickListener(v -> datePickerDialog.show());
+        dobTV.setOnClickListener(v -> datePickerDialog.show());
     }
 
     public void initElements() {
         fullNameEDT = findViewById(R.id.fullName);
         usernameEDT = findViewById(R.id.username);
         dobTV = findViewById(R.id.dob);
-        pickDateBtn = findViewById(R.id.date_button);
+       // pickDateBtn = findViewById(R.id.date_button);
         passwordEDT = findViewById(R.id.password);
         passwordVerificationEDT = findViewById(R.id.password_repeat);
         registerBtn = findViewById(R.id.login_button);
@@ -62,14 +62,17 @@ public class SignUpActivity extends AppCompatActivity {
         datePickerDialog = new DatePickerDialog(SignUpActivity.this,
                 (view, year, monthOfYear, dayOfMonth) -> {
                     // set day of month , month and year value in the edit text
-                    dobTV.setText(
-                            getString(
-                                    R.string.format_dob,
-                                    dayOfMonth,
-                                    monthOfYear + 1,
-                                    year
-                            )
-                    );
+                    if (year <= 1997){
+                        dobTV.setText(
+                                getString(
+                                        R.string.format_dob,
+                                        dayOfMonth,
+                                        monthOfYear + 1,
+                                        year
+                                )
+                        );
+                    }
+
 
                 },
                 selectedDate.getYear(),

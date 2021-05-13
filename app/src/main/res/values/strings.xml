@@ -2,7 +2,7 @@
     <string name="app_name">RESEND</string>
     <string name="domain">resend.com</string>
     <string name="sign_up_hint">Don\'t have an account ? Sign Up</string>
-    <string name="log_in">LOGIN</string>
+    <string name="log_in">LOG IN</string>
     <string name="register">SIGN UP</string>
     <string name="passcode">Enter Passcode</string>
     <string name="verify_passcode">Re-enter Passcode</string>
@@ -12,8 +12,10 @@
     <string name="bg_img_description">bgImage</string>
     <string name="sign_up_title">Welcome To RESEND</string>
     <string name="welcome_back">Welcome Back,</string>
-    <string name="format_dob">D.O.B: %1$d/%2$d/%3$d</string>
+    <string name="format_dob">%1$d/%2$d/%3$d</string>
     <string name="dob">D.O.B</string>
     <string name="pick_date">Pick Date</string>
     <string name="logout_btn">Logout</string>
+    <string name="register_small">Register</string>
+    <string name="tAndC"><![CDATA[Agree to Terms & Conditions]]></string>
 </resources>

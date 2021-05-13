@@ -5,11 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class MainActivity extends AppCompatActivity {
 
     TextView titlePage, subtitlePage, login, signUp;
+    ImageView backButton;
 
     EditText usernameEDT;
     EditText passwordEDT;
@@ -30,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         initElements();
 
@@ -40,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // pull text views
-        titlePage = findViewById(R.id.titlePage);
-        subtitlePage = findViewById(R.id.subtitlePage);
         login = findViewById(R.id.login);
         signUp = findViewById(R.id.signup_hint);
+        backButton = findViewById(R.id.backImage);
 
         // import font
         Typeface MLight = Typeface.createFromAsset(getAssets(), "font/MLight.ttf");
@@ -51,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
         Typeface MRegular = Typeface.createFromAsset(getAssets(), "font/MRegular.ttf");
 
         // apply font
-        titlePage.setTypeface(MRegular);
-        subtitlePage.setTypeface(MLight);
         login.setTypeface(MMedium);
 
         signUp.setOnClickListener(v -> {
@@ -60,6 +65,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
 
         });
+
+        backButton.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, LoadingPage.class);
+            startActivity(i);
+
+        });
+
 
 
     }
@@ -73,22 +85,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void login() {
         // Todo Start screen loader here
-        Log.v(TAG, "Button clicked");
-        String domain = getString(R.string.domain);
-        String username = usernameEDT.getText().toString();
-        String email = username.concat("@").concat(domain);
-        String password = passwordEDT.getText().toString();
 
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        gotoHomepage();
-                        Log.d(TAG, "signInWithEmail:success");
-                    }else {
-                        Log.w(TAG, "signInWithEmail:failure", task.getException());
-                        // Todo end screen loader here
-                    }
-                });
+        if( TextUtils.isEmpty(usernameEDT.getText()) && TextUtils.isEmpty(passwordEDT.getText()) ){
+            Toast.makeText(getApplicationContext(),
+                    "Check Textfields are not empty",
+                    Toast.LENGTH_SHORT)
+                    .show();
+
+            usernameEDT.setError( "First name is required!" );
+            passwordEDT.setError("passcode is required!" );
+
+        }else{
+            Log.v(TAG, "Button clicked");
+
+            String domain = getString(R.string.domain);
+            String username = usernameEDT.getText().toString();
+            String email = username.concat("@").concat(domain);
+            String password = passwordEDT.getText().toString();
+
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            gotoHomepage();
+                            Log.d("TAG", "signInWithEmail:success");
+                        }else {
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            // Todo end screen loader here
+                        }
+                    });
+        }
+
+
     }
 
     private void gotoHomepage() {
@@ -96,4 +123,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finishAffinity();
     }
+
 }
