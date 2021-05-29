@@ -1,13 +1,10 @@
 package com.example.resend;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -16,13 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView titlePage, subtitlePage, login, signUp;
+    TextView login, signUp;
     ImageView backButton;
 
     EditText usernameEDT;
@@ -86,17 +85,17 @@ public class MainActivity extends AppCompatActivity {
     private void login() {
         // Todo Start screen loader here
 
-        if( TextUtils.isEmpty(usernameEDT.getText()) && TextUtils.isEmpty(passwordEDT.getText()) ){
+        if( TextUtils.isEmpty(usernameEDT.getText()) || TextUtils.isEmpty(passwordEDT.getText()) ){
             Toast.makeText(getApplicationContext(),
                     "Check Textfields are not empty",
                     Toast.LENGTH_SHORT)
                     .show();
-
+            Log.v(TAG, "empty field Button clicked");
             usernameEDT.setError( "First name is required!" );
             passwordEDT.setError("passcode is required!" );
 
         }else{
-            Log.v(TAG, "Button clicked");
+            Log.d(TAG, "Button clicked");
 
             String domain = getString(R.string.domain);
             String username = usernameEDT.getText().toString();
@@ -107,10 +106,14 @@ public class MainActivity extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             gotoHomepage();
-                            Log.d("TAG", "signInWithEmail:success");
+                            Log.d(TAG, "signInWithEmail:success");
                         }else {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             // Todo end screen loader here
+                            Toast.makeText(getApplicationContext(),
+                                    "Incorrect Credentials",
+                                    Toast.LENGTH_SHORT)
+                                    .show();
                         }
                     });
         }

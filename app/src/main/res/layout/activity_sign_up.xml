@@ -6,184 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
 
-<!--    <ImageView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="220dp"-->
-<!--        android:layout_marginEnd="0dp"-->
-<!--        android:layout_marginStart="0dp"-->
-<!--        android:layout_marginTop="0dp"-->
-<!--        android:scaleType="centerCrop"-->
-<!--        android:src="@drawable/bgheader"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        android:contentDescription="@string/bg_img_description" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/titlePage"-->
-<!--        android:text="@string/app_name"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="8dp"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:textColor="#FFF"-->
-<!--        android:textSize="24sp"-->
-<!--        android:textAlignment="center"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/subtitlePage"-->
-<!--        android:text="@string/sign_up_title"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="8dp"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:layout_marginTop="12dp"-->
-<!--        android:textColor="#7CBAF5"-->
-<!--        android:textSize="18sp"-->
-<!--        android:lineSpacingExtra="6dp"-->
-<!--        android:textAlignment="center"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/titlePage"-->
-<!--        />-->
-
-<!--    <View-->
-<!--        android:id="@+id/signUpForm"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="300dp"-->
-<!--        android:layout_marginEnd="24dp"-->
-<!--        android:layout_marginStart="24dp"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:background="@drawable/bginfo"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/subtitlePage"-->
-<!--        />-->
-
-
-<!--    <TextView-->
-<!--        android:id="@+id/register"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="48dp"-->
-<!--        android:gravity="center"-->
-<!--        android:text="@string/register"-->
-<!--        android:textAllCaps="true"-->
-<!--        android:textSize="24sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/subtitlePage" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/fullName"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="58dp"-->
-<!--        android:layout_marginEnd="24dp"-->
-<!--        android:layout_marginStart="24dp"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:hint="@string/enter_full_name"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/register"-->
-<!--        android:inputType="text"-->
-<!--        android:autofillHints="Username" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/username"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="58dp"-->
-<!--        android:layout_marginEnd="24dp"-->
-<!--        android:layout_marginStart="24dp"-->
-<!--        android:layout_marginTop="2dp"-->
-<!--        android:hint="@string/enter_username"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/fullName"-->
-<!--        android:inputType="text"-->
-<!--        android:autofillHints="Full Name" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/dob"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="24dp"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:layout_marginEnd="24dp"-->
-<!--        android:text="@string/dob"-->
-<!--        android:textSize="24sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintLeft_toLeftOf="@+id/date_button"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/username" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/date_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="24dp"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginEnd="24dp"-->
-<!--        android:text="@string/pick_date"-->
-<!--        android:textColor="#070707"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.866"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/username" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/password"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="58dp"-->
-<!--        android:layout_marginStart="24dp"-->
-<!--        android:layout_marginTop="2dp"-->
-<!--        android:layout_marginEnd="24dp"-->
-<!--        android:hint="@string/passcode"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/date_button"-->
-<!--        android:autofillHints="Password"-->
-<!--        android:inputType="numberPassword" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/password_repeat"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="58dp"-->
-<!--        android:layout_marginStart="24dp"-->
-<!--        android:layout_marginTop="2dp"-->
-<!--        android:layout_marginEnd="24dp"-->
-<!--        android:hint="@string/passcode"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/password"-->
-<!--        android:autofillHints="Password"-->
-<!--        android:inputType="numberPassword" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/login_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:background="@drawable/button_gradient"-->
-<!--        android:gravity="center"-->
-<!--        android:text="@string/register"-->
-<!--        android:textColor="#7CBAF5"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.498"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/password_repeat" />-->
-
     <TextView
         android:id="@+id/register"
         android:layout_width="wrap_content"
@@ -209,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back_icon"
-        android:contentDescription="back icon" />
+        android:contentDescription="back_icon" />
 
 
 
@@ -330,9 +152,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
-        android:hint="****"
+        android:hint="******"
         android:ems="10"
-        android:maxLength="4"
+        android:maxLength="6"
         android:inputType="numberPassword"
         tools:layout_editor_absoluteX="20dp"
         tools:layout_editor_absoluteY="529dp"
@@ -363,9 +185,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
-        android:hint="****"
+        android:hint="******"
         android:ems="10"
-        android:maxLength="4"
+        android:maxLength="6"
         android:inputType="numberPassword"
         tools:layout_editor_absoluteX="20dp"
         tools:layout_editor_absoluteY="529dp"
@@ -398,7 +220,7 @@
         android:text="@string/tAndC"
         android:textColor="@color/blue"
         android:textSize="15sp"
-        android:checked="false"
+        android:checked="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.552"
         app:layout_constraintStart_toStartOf="parent"

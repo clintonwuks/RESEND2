@@ -1,14 +1,16 @@
 package com.example.resend;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.resend.models.User;
 import com.example.resend.models.firestore.FireStoreUser;
@@ -26,6 +28,8 @@ public class SignUpActivity extends AppCompatActivity {
     EditText passwordEDT;
     EditText passwordVerificationEDT;
     Button registerBtn;
+    ImageView backButton;
+    CheckBox cb_clickme;
 
 
     LocalDate selectedDate;
@@ -48,12 +52,20 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         dobTV.setOnClickListener(v -> datePickerDialog.show());
+
+        backButton.setOnClickListener(v -> {
+            Intent i = new Intent(SignUpActivity.this, LoadingPage.class);
+            startActivity(i);
+
+        });
     }
 
     public void initElements() {
         fullNameEDT = findViewById(R.id.fullName);
         usernameEDT = findViewById(R.id.username);
+        backButton = findViewById(R.id.backImage);
         dobTV = findViewById(R.id.dob);
+        cb_clickme = findViewById(R.id.checkBox);
        // pickDateBtn = findViewById(R.id.date_button);
         passwordEDT = findViewById(R.id.password);
         passwordVerificationEDT = findViewById(R.id.password_repeat);
@@ -62,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
         datePickerDialog = new DatePickerDialog(SignUpActivity.this,
                 (view, year, monthOfYear, dayOfMonth) -> {
                     // set day of month , month and year value in the edit text
-                    if (year <= 1997){
+                    if (year <= 2003){
                         dobTV.setText(
                                 getString(
                                         R.string.format_dob,
@@ -79,7 +91,22 @@ public class SignUpActivity extends AppCompatActivity {
                 selectedDate.getMonthValue(),
                 selectedDate.getDayOfMonth());
 
-        registerBtn.setOnClickListener(v -> register());
+       // registerBtn.setOnClickListener(v -> register());
+
+        // implementation of on checked change function that is required
+        cb_clickme.setOnCheckedChangeListener((button, state) -> {
+            if(!state)
+                registerBtn.setOnClickListener(v -> showToast());
+            else
+                registerBtn.setOnClickListener(v -> register());
+        });
+    }
+
+    private void showToast() {
+        Toast.makeText(getApplicationContext(),
+                "Please Accept Terms and Conditions",
+                Toast.LENGTH_SHORT)
+                .show();
     }
 
     public void register() {
@@ -94,6 +121,7 @@ public class SignUpActivity extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             saveUserDetails(user);
+                            Log.v(TAG, "Registration success");
                         } else {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Log.v(TAG, "Registration failed");
@@ -137,7 +165,7 @@ public class SignUpActivity extends AppCompatActivity {
             db.collection("Users").add(frUser)
                     .addOnSuccessListener(documentReference -> {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                        gotoHomepage();
+                        gotoLogin();
                     })
                     .addOnFailureListener(e -> {
                         Log.w(TAG, "Error adding document", e);
@@ -146,6 +174,12 @@ public class SignUpActivity extends AppCompatActivity {
         }else{
             Log.v(TAG, "Error getting logged in user");
         }
+    }
+
+    private void gotoLogin() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finishAffinity();
     }
 
     private void gotoHomepage() {

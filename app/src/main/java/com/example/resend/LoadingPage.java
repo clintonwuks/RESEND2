@@ -1,13 +1,13 @@
 package com.example.resend;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoadingPage extends AppCompatActivity {
 
@@ -45,4 +45,6 @@ public class LoadingPage extends AppCompatActivity {
 
         });
     }
+
+
 }
