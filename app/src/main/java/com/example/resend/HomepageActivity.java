@@ -31,6 +31,7 @@ public class HomepageActivity extends AppCompatActivity {
     }
 
     private void logout() {
+        // Todo Start screen loader here
         Log.v(TAG, "Clicked logout");
         firebaseAuth.signOut();
 

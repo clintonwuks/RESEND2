@@ -55,13 +55,10 @@ public class MainActivity extends AppCompatActivity {
         subtitlePage.setTypeface(MLight);
         login.setTypeface(MMedium);
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick( View v) {
-                Intent i = new Intent(MainActivity.this, SignUpActivity.class);
-                startActivity(i);
+        signUp.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, SignUpActivity.class);
+            startActivity(i);
 
-            }
         });
 
 
@@ -75,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login() {
+        // Todo Start screen loader here
         Log.v(TAG, "Button clicked");
         String domain = getString(R.string.domain);
         String username = usernameEDT.getText().toString();
@@ -88,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "signInWithEmail:success");
                     }else {
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        // Todo end screen loader here
                     }
                 });
     }
