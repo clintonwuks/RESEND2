@@ -91,7 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
                 selectedDate.getMonthValue(),
                 selectedDate.getDayOfMonth());
 
-       // registerBtn.setOnClickListener(v -> register());
+        registerBtn.setOnClickListener(v -> register());
 
         // implementation of on checked change function that is required
         cb_clickme.setOnCheckedChangeListener((button, state) -> {
