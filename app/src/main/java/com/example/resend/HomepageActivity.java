@@ -20,7 +20,7 @@ public class HomepageActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
 
-    Button logoutBtn;
+    Button AddMoneyBtn;
     ImageButton menu_icon;
 
     private FirebaseAuth firebaseAuth;
@@ -83,11 +83,11 @@ public class HomepageActivity extends AppCompatActivity {
     }
 
     private void initElements() {
-        logoutBtn = findViewById(R.id.logoutBtn);
+        AddMoneyBtn = findViewById(R.id.addMoneyBtn);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         menu_icon = findViewById(R.id.menu_icon);
-        logoutBtn.setOnClickListener(v -> logout());
+        AddMoneyBtn.setOnClickListener(v -> gotoAddMoney());
         tabLayout.addTab(tabLayout.newTab().setText("Accounts"));
         tabLayout.addTab(tabLayout.newTab().setText("Transactions"));
         tabLayout.addTab(tabLayout.newTab().setText("Friends"));
@@ -102,5 +102,11 @@ public class HomepageActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finishAffinity();
+    }
+
+    private void gotoAddMoney() {
+        Log.v(TAG, "Clicked Add money");
+        Intent intent = new Intent(this, AddMoneyActivity.class);
+        startActivity(intent);
     }
 }
