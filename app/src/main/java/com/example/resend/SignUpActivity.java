@@ -66,7 +66,6 @@ public class SignUpActivity extends AppCompatActivity {
         backButton = findViewById(R.id.backImage);
         dobTV = findViewById(R.id.dob);
         cb_clickme = findViewById(R.id.checkBox);
-       // pickDateBtn = findViewById(R.id.date_button);
         passwordEDT = findViewById(R.id.password);
         passwordVerificationEDT = findViewById(R.id.password_repeat);
         registerBtn = findViewById(R.id.login_button);

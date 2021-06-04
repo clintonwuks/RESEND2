@@ -9,6 +9,7 @@ public class User {
     public String username;
     public LocalDate dateOfBirth;
     public String password;
+    public Double wallet = 0.0;
 
     public User() {
     }
@@ -20,6 +21,14 @@ public class User {
         this.password = password;
     }
 
+    public User(String fullName, String username, LocalDate dateOfBirth, String password, Double wallet) {
+        this.fullName = fullName;
+        this.username = username;
+        this.dateOfBirth = dateOfBirth;
+        this.password = password;
+        this.wallet = wallet;
+    }
+
     @Override
     @NonNull
     public String toString() {
@@ -28,6 +37,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", password='" + password + '\'' +
+                ", wallet='" + wallet + '\'' +
                 '}';
     }
 }
