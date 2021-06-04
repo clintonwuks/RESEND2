@@ -33,4 +33,18 @@ public class FireStoreUser {
         this.dateOfBirth = dateOfBirth;
         this.wallet = wallet;
     }
+
+    @Override
+    public String toString() {
+        return "FireStoreUser{" +
+                "uuid='" + uuid + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", username='" + username + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", wallet=" + wallet +
+                ", friendRequest=" + friendRequest +
+                ", friends=" + friends +
+                ", transactions=" + transactions +
+                '}';
+    }
 }
