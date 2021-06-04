@@ -18,6 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
+import co.paystack.android.PaystackSdk;
+
 public class AddMoneyActivity extends AppCompatActivity {
 
     private EditText amount;
@@ -32,6 +34,7 @@ public class AddMoneyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_money);
 
+        PaystackSdk.initialize(this);
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null) {

@@ -10,36 +10,93 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
         android:text="@string/enter_amount"
         app:layout_constraintBottom_toTopOf="@+id/amount"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginHorizontal="20dp"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="100dp"
+        android:autofillHints="@string/amount_hint"
         android:ems="10"
-        android:inputType="numberSigned"
         android:hint="@string/amount_hint"
+        android:inputType="numberSigned"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="100dp"
-        android:autofillHints="@string/amount_hint" />
+        tools:layout_editor_absoluteX="100dp" />
+
+    <TextView
+        android:id="@+id/cardNumberLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/card_number"
+        app:layout_constraintBottom_toTopOf="@+id/cardNumber"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/cardNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="100dp"
+        android:autofillHints="@string/card_number"
+        android:ems="10"
+        android:hint="@string/card_number"
+        android:inputType="numberSigned"
+        app:layout_constraintTop_toBottomOf="@+id/amount"
+        tools:layout_editor_absoluteX="39dp" />
 
     <Button
         android:id="@+id/creditAccountBtn"
         style="@style/authButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="50dp"
         android:background="@color/blue"
         android:text="@string/credit_account"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="50dp"
-        android:layout_marginHorizontal="20dp"
         tools:layout_editor_absoluteX="20dp" />
+
+    <EditText
+        android:id="@+id/editTextNumberSigned"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardNumber" />
+
+    <EditText
+        android:id="@+id/editTextNumberSigned2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberSigned"
+        app:layout_constraintStart_toEndOf="@+id/editTextNumberSigned"
+        app:layout_constraintTop_toTopOf="@+id/editTextNumberSigned" />
+
+    <EditText
+        android:id="@+id/cvv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberSigned2"
+        app:layout_constraintStart_toEndOf="@+id/editTextNumberSigned2"
+        app:layout_constraintTop_toTopOf="@+id/editTextNumberSigned2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
