@@ -10,36 +10,104 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
         android:text="@string/enter_amount"
         app:layout_constraintBottom_toTopOf="@+id/amount"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginHorizontal="20dp"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="100dp"
+        android:autofillHints="@string/amount_hint"
         android:ems="10"
-        android:inputType="numberSigned"
         android:hint="@string/amount_hint"
+        android:inputType="numberSigned"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="100dp"
-        android:autofillHints="@string/amount_hint" />
+        tools:layout_editor_absoluteX="100dp" />
+
+    <TextView
+        android:id="@+id/cardNumberLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/card_number"
+        app:layout_constraintBottom_toTopOf="@+id/cardNumber"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/cardNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="100dp"
+        android:autofillHints="@string/card_number"
+        android:ems="10"
+        android:hint="@string/card_number"
+        android:inputType="numberSigned"
+        app:layout_constraintTop_toBottomOf="@+id/amount"
+        tools:layout_editor_absoluteX="39dp"
+        android:maxLength="16"/>
 
     <Button
         android:id="@+id/creditAccountBtn"
         style="@style/authButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="50dp"
         android:background="@color/blue"
         android:text="@string/credit_account"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="50dp"
-        android:layout_marginHorizontal="20dp"
         tools:layout_editor_absoluteX="20dp" />
+
+    <EditText
+        android:id="@+id/expMonth"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardNumber"
+        android:hint="@string/mm"
+        android:autofillHints="@string/mm"
+        android:maxLength="2"/>
+
+    <EditText
+        android:id="@+id/expYear"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintBottom_toBottomOf="@+id/expMonth"
+        app:layout_constraintStart_toEndOf="@+id/expMonth"
+        app:layout_constraintTop_toTopOf="@+id/expMonth"
+        android:hint="@string/yy"
+        android:autofillHints="@string/yy"
+        android:maxLength="4"/>
+
+    <EditText
+        android:id="@+id/cvv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintBottom_toBottomOf="@+id/expYear"
+        app:layout_constraintStart_toEndOf="@+id/expYear"
+        app:layout_constraintTop_toTopOf="@+id/expYear"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:hint="@string/cvv"
+        android:autofillHints="@string/cvv"
+        android:maxLength="3"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

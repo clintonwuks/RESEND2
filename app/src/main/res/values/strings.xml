@@ -27,4 +27,11 @@
     <string name="credit_account">Credit Account</string>
     <string name="amount_hint">0.00</string>
     <string name="enter_amount">Enter Amount</string>
+    <string name="card_number">Card Number</string>
+    <string name="mm">MM</string>
+    <string name="yy">YYYY</string>
+    <string name="cvv">CVV</string>
+    <string name="balance">£ %1$.2f</string>
+    <string name="fullName">%1$s</string>
+    <string name="acct_number">%1$s</string>
 </resources>

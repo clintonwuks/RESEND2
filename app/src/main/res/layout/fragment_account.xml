@@ -11,36 +11,37 @@
         android:id="@+id/fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="John Doe"
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/fullName"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.56"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/balance"
+        app:layout_constraintTop_toTopOf="@id/balance"
+        app:layout_constraintBottom_toBottomOf="@id/balance"/>
 
-    <TextView
+    <!--<TextView
         android:id="@+id/acct_Number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="acct_number"
+        android:text="@string/acct_number"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@id/fullName"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/fullName"
-        app:layout_constraintTop_toTopOf="@id/fullName" />
+        app:layout_constraintTop_toTopOf="@id/fullName" />-->
 
     <TextView
         android:id="@+id/balance"
         style="@style/TextAppearance.AppCompat.Headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="80dp"
-        android:text="£ 0.00"
-        app:layout_constraintEnd_toStartOf="@id/fullName"
+        android:layout_marginTop="40dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/balance"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
