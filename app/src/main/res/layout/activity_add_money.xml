@@ -50,7 +50,8 @@
         android:hint="@string/card_number"
         android:inputType="numberSigned"
         app:layout_constraintTop_toBottomOf="@+id/amount"
-        tools:layout_editor_absoluteX="39dp" />
+        tools:layout_editor_absoluteX="39dp"
+        android:maxLength="16"/>
 
     <Button
         android:id="@+id/creditAccountBtn"
@@ -66,8 +67,8 @@
         tools:layout_editor_absoluteX="20dp" />
 
     <EditText
-        android:id="@+id/editTextNumberSigned"
-        android:layout_width="50dp"
+        android:id="@+id/expMonth"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="50dp"
@@ -75,18 +76,24 @@
         android:inputType="numberSigned"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/cardNumber"
+        android:hint="@string/mm"
+        android:autofillHints="@string/mm"
+        android:maxLength="2"/>
 
     <EditText
-        android:id="@+id/editTextNumberSigned2"
+        android:id="@+id/expYear"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:ems="10"
         android:inputType="numberSigned"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberSigned"
-        app:layout_constraintStart_toEndOf="@+id/editTextNumberSigned"
-        app:layout_constraintTop_toTopOf="@+id/editTextNumberSigned" />
+        app:layout_constraintBottom_toBottomOf="@+id/expMonth"
+        app:layout_constraintStart_toEndOf="@+id/expMonth"
+        app:layout_constraintTop_toTopOf="@+id/expMonth"
+        android:hint="@string/yy"
+        android:autofillHints="@string/yy"
+        android:maxLength="4"/>
 
     <EditText
         android:id="@+id/cvv"
@@ -95,8 +102,12 @@
         android:layout_marginHorizontal="20dp"
         android:ems="10"
         android:inputType="numberSigned"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberSigned2"
-        app:layout_constraintStart_toEndOf="@+id/editTextNumberSigned2"
-        app:layout_constraintTop_toTopOf="@+id/editTextNumberSigned2" />
+        app:layout_constraintBottom_toBottomOf="@+id/expYear"
+        app:layout_constraintStart_toEndOf="@+id/expYear"
+        app:layout_constraintTop_toTopOf="@+id/expYear"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:hint="@string/cvv"
+        android:autofillHints="@string/cvv"
+        android:maxLength="3"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
