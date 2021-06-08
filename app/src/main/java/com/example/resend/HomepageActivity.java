@@ -13,8 +13,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.resend.models.firestore.FireStoreUser;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class HomepageActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -23,8 +29,11 @@ public class HomepageActivity extends AppCompatActivity {
     Button AddMoneyBtn;
     ImageButton menu_icon;
 
+    private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth;
     private final String TAG = "APP_TEST";
+
+    private FireStoreUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +41,11 @@ public class HomepageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_homepage);
         initElements();
 
+        db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        if(firebaseAuth.getCurrentUser() == null) {
+            logout();
+        }
 
         final MyAdapter adapter = new MyAdapter(this,getSupportFragmentManager(),
                 tabLayout.getTabCount());
