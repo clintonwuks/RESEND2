@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class Account extends Fragment {
     private TextView amountTV;
     private TextView fullNameTV;
+    private TextView usernameTV;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
@@ -55,6 +56,7 @@ public class Account extends Fragment {
         if (getActivity() != null) {
             amountTV = getActivity().findViewById(R.id.balance);
             fullNameTV = getActivity().findViewById(R.id.fullName);
+            usernameTV = getActivity().findViewById(R.id.acct_Number);
             Log.v(TAG, "Clicked Add money" + amountTV + fullNameTV);
             fetchUser();
         }
@@ -87,5 +89,6 @@ public class Account extends Fragment {
     private void setUserDetails() {
         amountTV.setText(getString(R.string.balance, user.wallet));
         fullNameTV.setText(getString(R.string.fullName, user.fullName));
+        usernameTV.setText(getString(R.string.acct_number, user.username));
     }
 }

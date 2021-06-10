@@ -8,6 +8,18 @@
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
+        android:id="@+id/acct_Number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="@string/acct_number"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@id/fullName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/fullName"
+        app:layout_constraintTop_toTopOf="@id/fullName" />
+
+    <TextView
         android:id="@+id/fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,31 +28,21 @@
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintBottom_toBottomOf="@id/balance"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.075"
         app:layout_constraintStart_toEndOf="@id/balance"
-        app:layout_constraintTop_toTopOf="@id/balance"
-        app:layout_constraintBottom_toBottomOf="@id/balance"/>
-
-    <!--<TextView
-        android:id="@+id/acct_Number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/acct_number"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@id/fullName"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/fullName"
-        app:layout_constraintTop_toTopOf="@id/fullName" />-->
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.822" />
 
     <TextView
         android:id="@+id/balance"
         style="@style/TextAppearance.AppCompat.Headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="124dp"
         android:text="@string/balance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

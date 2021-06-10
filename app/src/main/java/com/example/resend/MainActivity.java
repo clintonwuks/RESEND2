@@ -46,10 +46,7 @@ public class MainActivity extends AppCompatActivity {
             gotoHomepage();
         }
 
-        // pull text views
-        login = findViewById(R.id.login);
-        signUp = findViewById(R.id.signup_hint);
-        backButton = findViewById(R.id.backImage);
+
 
         // import font
         Typeface MLight = Typeface.createFromAsset(getAssets(), "font/MLight.ttf");
@@ -79,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
         usernameEDT = findViewById(R.id.username);
         passwordEDT = findViewById(R.id.password);
         loginBTN = findViewById(R.id.login_button);
+        // pull text views
+        login = findViewById(R.id.login);
+        signUp = findViewById(R.id.signup_hint);
+        backButton = findViewById(R.id.backImage);
         loginBTN.setOnClickListener(v -> login());
     }
 

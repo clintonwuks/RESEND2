@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class HomepageActivity extends AppCompatActivity {
 
     Button AddMoneyBtn;
     ImageButton menu_icon;
+    TextView profile_abb;
 
     private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth;
@@ -39,10 +41,11 @@ public class HomepageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
-        initElements();
-
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+
+
+        initElements();
         if(firebaseAuth.getCurrentUser() == null) {
             logout();
         }
@@ -99,12 +102,15 @@ public class HomepageActivity extends AppCompatActivity {
         AddMoneyBtn = findViewById(R.id.addMoneyBtn);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
+        profile_abb = findViewById(R.id.profile_abb);
         menu_icon = findViewById(R.id.menu_icon);
         AddMoneyBtn.setOnClickListener(v -> gotoAddMoney());
         tabLayout.addTab(tabLayout.newTab().setText("Accounts"));
         tabLayout.addTab(tabLayout.newTab().setText("Transactions"));
         tabLayout.addTab(tabLayout.newTab().setText("Friends"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        fetchUser();
     }
 
     private void logout() {
@@ -115,6 +121,42 @@ public class HomepageActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finishAffinity();
+    }
+
+    private void fetchUser() {
+        FirebaseUser fsUser = firebaseAuth.getCurrentUser();
+        if (fsUser != null) {
+            String uuid = fsUser.getUid();
+            Query query = db.collection("Users").whereEqualTo("uuid", uuid);
+            query.get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    QuerySnapshot res = task.getResult();
+
+                    if (res != null && !res.isEmpty()) {
+                        DocumentSnapshot userSnapshot = res.getDocuments().get(0);
+                        String documentId = userSnapshot.getId();
+                        FireStoreUser user = userSnapshot.toObject(FireStoreUser.class);
+                        if(user != null) this.user = user;
+                        setUserAcronym();
+                    }
+                } else {
+                    Log.v(TAG, "Error getting documents: ", task.getException());
+                }
+            });
+        }
+    }
+
+    private void setUserAcronym() {
+        String [] SepName = user.fullName.split(" ");
+        char ch1, ch2;
+        String sh1, sh2, acr="";
+        ch1 = SepName[0].charAt(0);
+        ch2 = SepName[1].charAt(0);
+
+        sh1 = String.valueOf(ch1);
+        sh2 = String.valueOf(ch2);
+        acr = sh1.concat(sh2);
+        profile_abb.setText(getString(R.string.profile_abb, acr));
     }
 
     private void gotoAddMoney() {
