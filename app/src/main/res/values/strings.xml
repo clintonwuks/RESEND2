@@ -35,4 +35,9 @@
     <string name="fullName">%1$s</string>
     <string name="acct_number">%1$s</string>
     <string name="profile_abb">%1$s</string>
+    <string name="search">Search</string>
+    <string name="jd">JD</string>
+    <string name="add_friend">ADD FRIEND</string>
+    <string name="send_money">SEND MONEY</string>
+    <string name="accept_request">ACCEPT REQUEST</string>
 </resources>
