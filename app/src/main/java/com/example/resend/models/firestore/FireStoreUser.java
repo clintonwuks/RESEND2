@@ -34,6 +34,10 @@ public class FireStoreUser {
         this.wallet = wallet;
     }
 
+    public String getUserAcronym() {
+        return String.valueOf(this.fullName.charAt(0));
+    }
+
     @Override
     public String toString() {
         return "FireStoreUser{" +

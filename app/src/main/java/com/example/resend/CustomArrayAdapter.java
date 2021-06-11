@@ -1,74 +1,69 @@
 package com.example.resend;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.resend.models.firestore.FireStoreUser;
+
 import java.util.ArrayList;
+import java.util.List;
 
-public class CustomArrayAdapter extends BaseAdapter {
-    private static final String TAG = "APP_TEST";
+public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.ViewHolder> {
+
     private Context context;
-    private ArrayList<FriendItem> al_items;
-    static class ViewHolder {
-        public TextView fName;
-        public TextView uName;
-        public TextView uAcr;
+    private ArrayList<FireStoreUser> users;
+
+    public CustomArrayAdapter(Context context, ArrayList<FireStoreUser> users) {
+        this.context = context;
+        this.users = users;
     }
 
-    public CustomArrayAdapter(Context c, ArrayList<FriendItem> al) {
-        context = c;
-        al_items = al;
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater
+                        .from(parent.getContext())
+                        .inflate(R.layout.friends_item_layout, parent, false);
+        return new ViewHolder(view);
     }
-    // overridden method that will construct a View for the listview out ofthe
-    // item at the given position
-    public View getView(int position, View convert_view, ViewGroup parent) {
-        // view holder to save us from requesting references to items over and overagain
-        ViewHolder holder;
-// if we do not have a view to recycle then inflate the layout and fix up theview holder
-        if(convert_view == null) {
-            holder = new ViewHolder();
-// get access to the layout infaltor service
-            LayoutInflater inflator = (LayoutInflater)
-                    context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-// inflate the XML custom item layout into a view to which we can add data
-            convert_view = inflator.inflate(R.layout.friends_item_layout, parent,
-                    false);
-// pull all the items from the XML so we can modify them
-            holder.fName = convert_view.findViewById(R.id.fullName);
-            holder.uName = convert_view.findViewById(R.id.username);
-            holder.uAcr = convert_view.findViewById(R.id.acr);
-// set the view holder as a tag on this convert view in case it needs tobe
-// recycled
-            convert_view.setTag(holder);
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bindData(context, users.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return users.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView fullName;
+        private final TextView username;
+        private final TextView frame;
+
+        public ViewHolder(View view) {
+            super(view);
+            // Define click listener for the ViewHolder's View
+
+            fullName = (TextView) view.findViewById(R.id.fullName);
+            username = (TextView) view.findViewById(R.id.username);
+            frame = (TextView) view.findViewById(R.id.acr);
         }
-        else {
-            holder = (ViewHolder) convert_view.getTag();
+
+        public void bindData(Context context, FireStoreUser user) {
+            fullName.setText(user.fullName);
+            username.setText(user.username);
+            frame.setText(user.getUserAcronym());
         }
-// set all the data on the fields before returning it
-        holder.uAcr.setText(al_items.get(position).getAcr());
-        holder.fName.setText(al_items.get(position).getFullName());
-        holder.uName.setText(al_items.get(position).getUserName());
-        Log.d("TAG", "full name " + al_items.get(position).getFullName());
-        Log.d(TAG, "user name " + al_items.get(position).getUserName());
-// return the constructed view
-        return convert_view;
-
     }
-    // overridden method that will tell the listview how many items of datathere is
-    // to be displayed
-    public int getCount() { return al_items.size(); }
-    // returns the rowid of the item at the given position. Given that we areusing an
-    // array list the rowid will be equal to the index of the item
-    public long getItemId(int position) { return position; }
-    // overridden method that will return the item at the given position inthe list
-    public Object getItem(int position) { return al_items.get(position); }
-
-
 
 }
 

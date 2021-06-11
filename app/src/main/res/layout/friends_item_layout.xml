@@ -6,45 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".Friends">
 
+    <FrameLayout android:id="@+id/frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView android:id="@+id/acr"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="@string/jd"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:background="@color/colorAccent" />
+
+        <ImageView
+            android:id="@+id/circle_crop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/circle_crop"
+            android:contentDescription="@string/jd" />
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fullName"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.019" />
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toTopOf="@id/frame"
+        app:layout_constraintBottom_toBottomOf="@id/frame"
+        app:layout_constraintStart_toEndOf="@id/frame"/>
 
-    <FrameLayout android:id="@+id/frame"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fullName"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.035">
-
-        <TextView android:id="@+id/acr"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:text="JD"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:background="@color/colorAccent"
-            />
-
-        <ImageView android:id="@+id/circle_crop"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/circle_crop" />
-
-    </FrameLayout>
 
     <TextView
         android:id="@+id/username"
@@ -53,9 +50,23 @@
         android:layout_marginTop="8dp"
         android:text="@string/acct_number"
         android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/fullName"
+        app:layout_constraintStart_toStartOf="@id/fullName"/>
+
+    <Button
+        android:id="@+id/action"
+        android:text="@string/add_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:paddingHorizontal="10dp"
+        android:background="@color/blue"
+        android:textColor="@color/white"
+        android:shadowColor="@color/blue"
+        app:layout_constraintTop_toTopOf="@id/fullName"
+        app:layout_constraintBottom_toBottomOf="@id/fullName"
+        app:layout_constraintStart_toEndOf="@id/fullName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
-        app:layout_constraintStart_toEndOf="@id/frame"
-        app:layout_constraintTop_toBottomOf="@id/fullName" />
+        app:layout_constraintHorizontal_bias="1"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
