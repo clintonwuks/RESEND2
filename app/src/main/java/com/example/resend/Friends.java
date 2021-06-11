@@ -92,6 +92,7 @@ public class Friends extends Fragment {
                     this.users.clear();
                     this.users.addAll(users);
                     customArrayAdapter.notifyDataSetChanged();
+
                     for (FireStoreUser u : users) {
                         Log.v(TAG, u.toString());
                     }
