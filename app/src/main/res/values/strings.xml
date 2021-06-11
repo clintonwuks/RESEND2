@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">RESEND</string>
     <string name="domain">resend.com</string>
+    <string name="user_key">user_key</string>
     <string name="sign_up_hint">Don\'t have an account ? Sign Up</string>
     <string name="log_in">LOG IN</string>
     <string name="register">SIGN UP</string>

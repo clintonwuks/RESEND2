@@ -1,7 +1,9 @@
 package com.example.resend;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 public class HomepageActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -36,14 +39,18 @@ public class HomepageActivity extends AppCompatActivity {
     private final String TAG = "APP_TEST";
 
     private FireStoreUser user;
+    SharedPreferences preferences;
+    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
+
+        gson = new Gson();
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         initElements();
         if(firebaseAuth.getCurrentUser() == null) {
@@ -124,26 +131,13 @@ public class HomepageActivity extends AppCompatActivity {
     }
 
     private void fetchUser() {
-        FirebaseUser fsUser = firebaseAuth.getCurrentUser();
-        if (fsUser != null) {
-            String uuid = fsUser.getUid();
-            Query query = db.collection("Users").whereEqualTo("uuid", uuid);
-            query.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()) {
-                    QuerySnapshot res = task.getResult();
+        String userKey = getString(R.string.user_key);
+        FireStoreUser user = gson.fromJson(
+                preferences.getString(userKey, ""),
+                FireStoreUser.class
+        );
 
-                    if (res != null && !res.isEmpty()) {
-                        DocumentSnapshot userSnapshot = res.getDocuments().get(0);
-                        String documentId = userSnapshot.getId();
-                        FireStoreUser user = userSnapshot.toObject(FireStoreUser.class);
-                        if(user != null) this.user = user;
-                        setUserAcronym();
-                    }
-                } else {
-                    Log.v(TAG, "Error getting documents: ", task.getException());
-                }
-            });
-        }
+        if (user != null) this.user = user; else gotoHomepage();
     }
 
     private void setUserAcronym() {
@@ -163,5 +157,11 @@ public class HomepageActivity extends AppCompatActivity {
         Log.v(TAG, "Clicked Add money");
         Intent intent = new Intent(this, AddMoneyActivity.class);
         startActivity(intent);
+    }
+
+    private void gotoHomepage() {
+        Intent intent = new Intent(this, HomepageActivity.class);
+        startActivity(intent);
+        finishAffinity();
     }
 }
