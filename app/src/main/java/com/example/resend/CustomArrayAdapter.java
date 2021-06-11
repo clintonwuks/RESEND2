@@ -21,12 +21,14 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
 
     private Context context;
     private ArrayList<FireStoreUser> users;
-    private ArrayList<String> friends;
-    private ArrayList<String> request;
+    private List<String> friends;
+    private List<String> request;
 
-    public CustomArrayAdapter(Context context, ArrayList<FireStoreUser> users) {
+    public CustomArrayAdapter(Context context, ArrayList<FireStoreUser> users, List<String> friends, List<String> request) {
         this.context = context;
         this.users = users;
+        this.friends = friends;
+        this.request = request;
     }
 
     @NonNull
@@ -67,14 +69,14 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
         public void bindData(
                 Context context,
                 FireStoreUser user,
-                ArrayList<String> friends,
-                ArrayList<String> request
+                List<String> friends,
+                List<String> request
         ) {
             fullName.setText(user.fullName);
             username.setText(user.username);
             frame.setText(user.getUserAcronym());
 
-            /*if (friends.contains(user.uuid)) {
+            if (friends.contains(user.uuid)) {
                 action.setText(context.getString(R.string.send_money));
                 action.setOnClickListener(v -> sendMoney(user.uuid));
             } else if (request.contains(user.uuid)) {
@@ -83,7 +85,7 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
             } else {
                 action.setText(context.getString(R.string.add_friend));
                 action.setOnClickListener(v -> addFriend(user.uuid));
-            }*/
+            }
         }
 
         private void sendMoney(String userId) {
