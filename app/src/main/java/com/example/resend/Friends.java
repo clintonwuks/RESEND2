@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 
 public class Friends extends Fragment {
     private ListView lv_mainlist;
-    private EditText editText;
+    private SearchView searchView;
     private ArrayList<FriendItem> al_items;
     private CustomArrayAdapter caa;
     private FirebaseAuth firebaseAuth;
@@ -52,34 +53,47 @@ public class Friends extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         initElements();
 
-        editText.setOnEditorActionListener((view1, actionid, event) -> {
-// if the user is done entering in a new string then add it to
-// the array list. this then notifies the adapter that the data has
-// changed and that the list view needs to be updated
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.v(TAG, query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.v(TAG, newText);
+                return true;
+            }
+        });
+        /*searchView.setOnEditorActionListener((view1, actionid, event) -> {
+        // if the user is done entering in a new string then add it to
+                // the array list. this then notifies the adapter that the data has
+                // changed and that the list view needs to be updated
 //            if(actionid == EditorInfo.IME_NULL
 //                    && event.getAction() == KeyEvent.ACTION_DOWN) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionid == EditorInfo.IME_ACTION_DONE)) {
-                al_items.add(new FriendItem(editText.getText().toString()));
+                al_items.add(new FriendItem(searchView.getText().toString()));
                 Log.d(TAG, "array list: " + al_items.toString());
                 caa.notifyDataSetChanged();
-                editText.getText().clear();
+                searchView.getText().clear();
                 //tv_display.setText("added item: " + et_new_strings.getText());
                 //return true;
             }
 // if we get to this point then the event has not been handled thus
 // return false
             return false;
-        });
-
+        });*/
 
     }
 
     private void initElements() {
         if (getActivity() != null) {
             lv_mainlist = getActivity().findViewById(R.id.lv_mainlist);
-            editText = getActivity().findViewById(R.id.editText);
+            searchView = getActivity().findViewById(R.id.search_view);
             al_items = new ArrayList<>();
-// create an array adapter for al_strings and set it on the listview
+
+            // create an array adapter for al_strings and set it on the listview
             caa = new CustomArrayAdapter(requireContext(), al_items);
             lv_mainlist.setAdapter(caa);
             //fetchUser();
