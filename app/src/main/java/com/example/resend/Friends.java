@@ -75,8 +75,10 @@ public class Friends extends Fragment {
             RecyclerView.LayoutManager lManager = new LinearLayoutManager(requireActivity());
 
             // create an array adapter for al_strings and set it on the listview
-            List<String> friends = user.friends.stream().map(a -> a.uuid).collect(Collectors.toList());
-            List<String> request = user.friendRequest.stream().map(a -> a.uuid).collect(Collectors.toList());
+            // List<String> friends = user.friends.stream().map(a -> a.uuid).collect(Collectors.toList());
+            // List<String> request = user.friendRequest.stream().map(a -> a.uuid).collect(Collectors.toList());
+            List<String> friends = new ArrayList<>();
+            List<String> request = new ArrayList<>();
             customArrayAdapter = new CustomArrayAdapter(requireContext(), users, friends, request);
             lv_mainlist.setLayoutManager(lManager);
             lv_mainlist.setAdapter(customArrayAdapter);
