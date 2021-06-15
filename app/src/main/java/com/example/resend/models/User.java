@@ -3,6 +3,8 @@ package com.example.resend.models;
 import androidx.annotation.NonNull;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     public String fullName;

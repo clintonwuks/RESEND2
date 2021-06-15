@@ -156,14 +156,14 @@ public class SignUpActivity extends AppCompatActivity {
             String uuid = firebaseAuth.getCurrentUser().getUid();
             final FireStoreUser frUser = new FireStoreUser(
                     uuid,
-                    user.fullName,
-                    user.username,
+                    user.fullName.toLowerCase(),
+                    user.username.toLowerCase(),
                     user.dateOfBirth.toString()
             );
 
-            db.collection("Users").add(frUser)
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+            db.collection("Users").document(uuid).set(frUser)
+                    .addOnSuccessListener(v -> {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + uuid);
                         gotoLogin();
                     })
                     .addOnFailureListener(e -> {
