@@ -1,6 +1,8 @@
 package com.example.resend;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.resend.models.firestore.FireStoreUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.gson.Gson;
+import com.google.protobuf.Any;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.ViewHolder> {
 
@@ -110,6 +121,55 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
 
         private void addFriend(Context context, String userId) {
             Log.v("APP_TEST", "Adding as friend" + userId);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FireStoreUser user = fetchUser(context);
+
+            CollectionReference ref = db.collection("Users");
+            ref.document(userId).get()
+                    .addOnSuccessListener(v -> {
+                        FireStoreUser addUser = v.toObject(FireStoreUser.class);
+                        if (addUser != null) {
+                            List<String> addUserReq =
+                                    addUser.friendRequest != null ? addUser.friendRequest : new ArrayList<>();
+                            addUserReq.add(user.uuid);
+
+                            ref.document(userId)
+                                    .update("friendRequest", addUserReq)
+                                    .addOnSuccessListener(v1 -> {
+                                        user.sentFriendRequest.add(userId);
+                                        db.collection("Users").document(user.uuid)
+                                                .update("sentFriendRequest", user.sentFriendRequest)
+                                                .addOnSuccessListener(v2 -> {
+                                                    action.setText(context.getString(R.string.pending_request));
+                                                    action.setOnClickListener(null);
+                                                    updateUser(context, user);
+                                                });
+                                    });
+                        }
+                    })
+                    .addOnFailureListener(e -> {});
+        }
+
+        private FireStoreUser fetchUser(Context context) {
+            Gson gson = new Gson();
+            String userKey = context.getString(R.string.user_key);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            
+            return gson.fromJson(
+                    preferences.getString(userKey, ""),
+                    FireStoreUser.class
+            );
+        }
+
+        private void updateUser(Context context, FireStoreUser user) {
+            Gson gson = new Gson();
+            String userKey = context.getString(R.string.user_key);
+            String userJson = gson.toJson(user);
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(userKey, userJson);
+            editor.apply();
         }
     }
 
