@@ -117,6 +117,41 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
 
         private void acceptRequest(Context context, String userId) {
             Log.v("APP_TEST", "Accepting request from " + userId);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FireStoreUser user = fetchUser(context);
+
+            CollectionReference ref = db.collection("Users");
+            ref.document(userId).get()
+                    .addOnSuccessListener(v -> {
+                        FireStoreUser addUser = v.toObject(FireStoreUser.class);
+
+                        if (addUser != null) {
+                            List<String> sentFriendRequest =
+                                    addUser.sentFriendRequest != null ? addUser.sentFriendRequest : new ArrayList<>();
+                            List<String> friends =
+                                    addUser.friends != null ? addUser.friends : new ArrayList<>();
+                            sentFriendRequest.removeIf(id -> id.equals(user.uuid));
+                            friends.add(user.uuid);
+
+
+                            ref.document(userId)
+                                    .update("sentFriendRequest", sentFriendRequest, "friends", friends)
+                                    .addOnSuccessListener(v1 -> {
+                                        user.friendRequest.removeIf(id -> id.equals(userId));
+                                        user.friends.add(userId);
+                                        db.collection("Users").document(user.uuid)
+                                                .update(
+                                                        "friendRequest", user.friendRequest,
+                                                        "friends", user.friends
+                                                )
+                                                .addOnSuccessListener(v2 -> {
+                                                    action.setText(context.getString(R.string.send_money));
+                                                    action.setOnClickListener(v3 -> sendMoney(context, user.uuid));
+                                                    updateUser(context, user);
+                                                });
+                                    });
+                        }
+                    });
         }
 
         private void addFriend(Context context, String userId) {
@@ -129,12 +164,12 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
                     .addOnSuccessListener(v -> {
                         FireStoreUser addUser = v.toObject(FireStoreUser.class);
                         if (addUser != null) {
-                            List<String> addUserReq =
+                            List<String> friendRequest =
                                     addUser.friendRequest != null ? addUser.friendRequest : new ArrayList<>();
-                            addUserReq.add(user.uuid);
+                            friendRequest.add(user.uuid);
 
                             ref.document(userId)
-                                    .update("friendRequest", addUserReq)
+                                    .update("friendRequest", friendRequest)
                                     .addOnSuccessListener(v1 -> {
                                         user.sentFriendRequest.add(userId);
                                         db.collection("Users").document(user.uuid)
@@ -146,8 +181,7 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
                                                 });
                                     });
                         }
-                    })
-                    .addOnFailureListener(e -> {});
+                    });
         }
 
         private FireStoreUser fetchUser(Context context) {
