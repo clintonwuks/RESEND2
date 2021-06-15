@@ -147,11 +147,14 @@ public class MainActivity extends AppCompatActivity {
 
                         if (users.size() > 0) {
                             FireStoreUser user = users.get(0);
+                            String userId = res.getDocuments().get(0).getId();
                             String userKey = getString(R.string.user_key);
+                            String userIdKey = getString(R.string.user_id_key);
                             String userJson = gson.toJson(user);
 
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString(userKey, userJson);
+                            editor.putString(userIdKey, userId);
                             editor.apply();
 
                             startActivity(intent);

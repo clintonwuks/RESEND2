@@ -40,8 +40,6 @@ public class Friends extends Fragment {
     private Gson gson;
     SharedPreferences preferences;
 
-    private FireStoreUser user;
-
     public Friends() {
         // Required empty public constructor
     }
@@ -78,22 +76,23 @@ public class Friends extends Fragment {
     private void initElements() {
         if (getActivity() != null) {
             preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            fetchUser();
-
             lv_mainlist = getActivity().findViewById(R.id.lv_mainlist);
             searchView = getActivity().findViewById(R.id.search_view);
             RecyclerView.LayoutManager lManager = new LinearLayoutManager(requireActivity());
+            FireStoreUser user = fetchUser();
 
             // create an array adapter for al_strings and set it on the listview
-            List<String> friends = user.friends != null ? user.friends : new ArrayList<>();
-            List<String> request = user.friendRequest != null ? user.friendRequest : new ArrayList<>();
+            if (user != null) {
+                List<String> friends = user.friends != null ? user.friends : new ArrayList<>();
+                List<String> request = user.friendRequest != null ? user.friendRequest : new ArrayList<>();
 
-            Log.d(TAG, "friends" + friends.toString());
-            Log.d(TAG, "request" + request.toString());
+                Log.d(TAG, "friends" + friends.toString());
+                Log.d(TAG, "request" + request.toString());
 
-            customArrayAdapter = new CustomArrayAdapter(requireContext(), users, friends, request);
-            lv_mainlist.setLayoutManager(lManager);
-            lv_mainlist.setAdapter(customArrayAdapter);
+                customArrayAdapter = new CustomArrayAdapter(requireContext(), users, friends, request);
+                lv_mainlist.setLayoutManager(lManager);
+                lv_mainlist.setAdapter(customArrayAdapter);
+            }
             //fetchUser();
         }
     }
@@ -121,7 +120,7 @@ public class Friends extends Fragment {
         });
     }
 
-    private void fetchUser() {
+    private FireStoreUser fetchUser() {
         if (getActivity() != null) {
             String userKey = getString(R.string.user_key);
             FireStoreUser user = gson.fromJson(
@@ -129,8 +128,10 @@ public class Friends extends Fragment {
                     FireStoreUser.class
             );
 
-            if (user != null) this.user = user; else gotoHomepage();
+            if (user != null) return user; else gotoHomepage();
         }
+
+        return null;
     }
 
     private void gotoHomepage() {
