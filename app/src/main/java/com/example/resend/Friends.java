@@ -85,11 +85,19 @@ public class Friends extends Fragment {
             if (user != null) {
                 List<String> friends = user.friends != null ? user.friends : new ArrayList<>();
                 List<String> request = user.friendRequest != null ? user.friendRequest : new ArrayList<>();
+                List<String> sentRequest = user.sentFriendRequest != null ? user.sentFriendRequest : new ArrayList<>();
 
-                Log.d(TAG, "friends" + friends.toString());
-                Log.d(TAG, "request" + request.toString());
+                Log.d(TAG, "friends: " + friends.toString());
+                Log.d(TAG, "request: " + request.toString());
+                Log.d(TAG, "pending request: " + sentRequest.toString());
 
-                customArrayAdapter = new CustomArrayAdapter(requireContext(), users, friends, request);
+                customArrayAdapter = new CustomArrayAdapter(
+                        requireContext(),
+                        users,
+                        friends,
+                        request,
+                        sentRequest
+                );
                 lv_mainlist.setLayoutManager(lManager);
                 lv_mainlist.setAdapter(customArrayAdapter);
             }

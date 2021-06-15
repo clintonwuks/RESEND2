@@ -23,12 +23,20 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
     private ArrayList<FireStoreUser> users;
     private List<String> friends;
     private List<String> request;
+    private List<String> sentRequest;
 
-    public CustomArrayAdapter(Context context, ArrayList<FireStoreUser> users, List<String> friends, List<String> request) {
+    public CustomArrayAdapter(
+            Context context,
+            ArrayList<FireStoreUser> users,
+            List<String> friends,
+            List<String> request,
+            List<String> sentRequest
+    ) {
         this.context = context;
         this.users = users;
         this.friends = friends;
         this.request = request;
+        this.sentRequest = sentRequest;
     }
 
     @NonNull
@@ -42,7 +50,7 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindData(context, users.get(position), friends, request);
+        holder.bindData(context, users.get(position), friends, request, sentRequest);
     }
 
     @Override
@@ -70,7 +78,8 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
                 Context context,
                 FireStoreUser user,
                 List<String> friends,
-                List<String> request
+                List<String> request,
+                List<String> sentRequest
         ) {
             fullName.setText(user.fullName);
             username.setText(user.username);
@@ -78,26 +87,28 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
 
             if (friends.contains(user.uuid)) {
                 action.setText(context.getString(R.string.send_money));
-                action.setOnClickListener(v -> sendMoney(user.uuid));
+                action.setOnClickListener(v -> sendMoney(context, user.uuid));
             } else if (request.contains(user.uuid)) {
                 action.setText(context.getString(R.string.accept_request));
-                action.setOnClickListener(v -> acceptRequest(user.uuid));
+                action.setOnClickListener(v -> acceptRequest(context, user.uuid));
+            } else if (sentRequest.contains(user.uuid)) {
+                action.setText(context.getString(R.string.pending_request));
             } else {
                 action.setText(context.getString(R.string.add_friend));
-                action.setOnClickListener(v -> addFriend(user.uuid));
+                action.setOnClickListener(v -> addFriend(context, user.uuid));
             }
         }
 
-        private void sendMoney(String userId) {
+        private void sendMoney(Context context, String userId) {
             // todo goto to the send money page (create a page with amount input and send button and link to that page here)
             Log.v("APP_TEST", "Send money to " + userId);
         }
 
-        private void acceptRequest(String userId) {
+        private void acceptRequest(Context context, String userId) {
             Log.v("APP_TEST", "Accepting request from " + userId);
         }
 
-        private void addFriend(String userId) {
+        private void addFriend(Context context, String userId) {
             Log.v("APP_TEST", "Adding as friend" + userId);
         }
     }

@@ -17,6 +17,7 @@ public class FireStoreUser {
     public Double wallet = 0.0;
     public List<String> friends = new ArrayList<>();
     public List<String> friendRequest = new ArrayList<>();
+    public List<String> sentFriendRequest = new ArrayList<>();
 
     public FireStoreUser() {}
 
@@ -42,6 +43,7 @@ public class FireStoreUser {
                 ", wallet=" + wallet +
                 ", friends=" + friends +
                 ", friendRequest=" + friendRequest +
+                ", sentFriendRequest=" + sentFriendRequest +
                 '}';
     }
 }

@@ -42,4 +42,5 @@
     <string name="add_friend">ADD</string>
     <string name="send_money">SEND</string>
     <string name="accept_request">ACCEPT</string>
+    <string name="pending_request">PENDING</string>
 </resources>
