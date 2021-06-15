@@ -2,7 +2,6 @@ package com.example.resend.models.firestore;
 
 import androidx.annotation.NonNull;
 
-import com.example.resend.Friends;
 import com.example.resend.models.Friend;
 import com.example.resend.models.FriendRequest;
 import com.example.resend.models.Transaction;
@@ -16,6 +15,8 @@ public class FireStoreUser {
     public String username;
     public String dateOfBirth;
     public Double wallet = 0.0;
+    public List<String> friends = new ArrayList<>();
+    public List<String> friendRequest = new ArrayList<>();
 
     public FireStoreUser() {}
 
@@ -39,6 +40,8 @@ public class FireStoreUser {
                 ", username='" + username + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", wallet=" + wallet +
+                ", friends=" + friends +
+                ", friendRequest=" + friendRequest +
                 '}';
     }
 }

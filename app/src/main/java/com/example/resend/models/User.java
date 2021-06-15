@@ -12,9 +12,6 @@ public class User {
     public LocalDate dateOfBirth;
     public String password;
     public Double wallet = 0.0;
-    public List<FriendRequest> friendRequest = new ArrayList<>();
-    public List<Friend> friends = new ArrayList<>();
-    public List<Transaction> transactions = new ArrayList<>();
 
     public User() {
     }
