@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.resend.models.firestore.FireStoreUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -137,31 +139,24 @@ public class MainActivity extends AppCompatActivity {
         if (fsUser != null) {
             String uuid = fsUser.getUid();
             Log.v(TAG, "uuid: " + uuid);
-            Query query = db.collection("Users").whereEqualTo("uuid", uuid);
+            DocumentReference query = db.collection("Users").document(uuid);
             query.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()) {
-                    QuerySnapshot res = task.getResult();
+                if (task.isSuccessful()) {
+                    DocumentSnapshot res = task.getResult();
 
                     if (res != null) {
-                        List<FireStoreUser> users = res.toObjects(FireStoreUser.class);
+                        FireStoreUser user = res.toObject(FireStoreUser.class);
+                        String userKey = getString(R.string.user_key);
+                        String userJson = gson.toJson(user);
 
-                        if (users.size() > 0) {
-                            FireStoreUser user = users.get(0);
-                            String userId = res.getDocuments().get(0).getId();
-                            String userKey = getString(R.string.user_key);
-                            String userIdKey = getString(R.string.user_id_key);
-                            String userJson = gson.toJson(user);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(userKey, userJson);
+                        editor.apply();
 
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString(userKey, userJson);
-                            editor.putString(userIdKey, userId);
-                            editor.apply();
-
-                            startActivity(intent);
-                            finishAffinity();
-                        } else {
-                            Log.v(TAG, "Error getting documents: ", task.getException());
-                        }
+                        startActivity(intent);
+                        finishAffinity();
+                    } else {
+                        Log.v(TAG, "Error getting documents: ", task.getException());
                     }
                 } else {
                     Log.v(TAG, "Error getting documents: ", task.getException());

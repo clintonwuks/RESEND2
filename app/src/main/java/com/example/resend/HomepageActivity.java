@@ -134,6 +134,7 @@ public class HomepageActivity extends AppCompatActivity {
                 FireStoreUser.class
         );
 
+        Log.v(TAG, "uuid: " + user);
         if (user != null) return user; else gotoHomepage();
 
         return null;

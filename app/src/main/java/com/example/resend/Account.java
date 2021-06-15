@@ -1,6 +1,8 @@
 package com.example.resend;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 public class Account extends Fragment {
     private TextView amountTV;
@@ -27,6 +30,8 @@ public class Account extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
     private final String TAG = "APP_TEST";
+    private SharedPreferences preferences;
+    private Gson gson;
 
     private FireStoreUser user;
 
@@ -49,6 +54,8 @@ public class Account extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        gson = new Gson();
         initElements();
     }
 
@@ -58,32 +65,18 @@ public class Account extends Fragment {
             fullNameTV = getActivity().findViewById(R.id.fullName);
             usernameTV = getActivity().findViewById(R.id.acct_Number);
             Log.v(TAG, "Clicked Add money" + amountTV + fullNameTV);
-            fetchUser();
+            this.user = fetchUser();
+            setUserDetails();
         }
     }
 
 
-    private void fetchUser() {
-        FirebaseUser fsUser = firebaseAuth.getCurrentUser();
-        if (fsUser != null) {
-            String uuid = fsUser.getUid();
-            Query query = db.collection("Users").whereEqualTo("uuid", uuid);
-            query.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()) {
-                    QuerySnapshot res = task.getResult();
-
-                    if (res != null && !res.isEmpty()) {
-                        DocumentSnapshot userSnapshot = res.getDocuments().get(0);
-                        String documentId = userSnapshot.getId();
-                        FireStoreUser user = userSnapshot.toObject(FireStoreUser.class);
-                        if(user != null) this.user = user;
-                        setUserDetails();
-                    }
-                } else {
-                    Log.v(TAG, "Error getting documents: ", task.getException());
-                }
-            });
-        }
+    private FireStoreUser fetchUser() {
+        String userKey = getString(R.string.user_key);
+        return gson.fromJson(
+                preferences.getString(userKey, ""),
+                FireStoreUser.class
+        );
     }
 
     private void setUserDetails() {
