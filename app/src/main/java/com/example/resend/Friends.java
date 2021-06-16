@@ -107,7 +107,7 @@ public class Friends extends Fragment {
 
     private void findUser(String username) {
         Log.v(TAG, username);
-        Query query = db.collection("Users").whereGreaterThanOrEqualTo("username", username);
+        Query query = db.collection("Users").whereEqualTo("username", username.toLowerCase());
         query.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 QuerySnapshot res = task.getResult();
