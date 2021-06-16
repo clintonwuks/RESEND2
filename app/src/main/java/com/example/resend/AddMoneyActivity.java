@@ -1,12 +1,12 @@
 package com.example.resend;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.resend.models.firestore.FireStoreUser;
 import com.google.firebase.auth.FirebaseAuth;
@@ -89,7 +89,7 @@ public class AddMoneyActivity extends AppCompatActivity {
                 cvv
         );
         charge.setAmount(paystackAmount);
-        charge.setEmail("festusyuma@gmail.com");
+        charge.setEmail("clintonwuks@gmail.com");
         charge.setCard(card);
 
         PaystackSdk.chargeCard(this, charge, new Paystack.TransactionCallback() {
@@ -108,7 +108,7 @@ public class AddMoneyActivity extends AppCompatActivity {
             public void onError(Throwable error, Transaction transaction) {
                 Log.d(TAG, "onError: " + error.getLocalizedMessage());
                 Log.d(TAG, "onError: " + error);
-                // todo show error and end loader
+                // todo show error toast and end loader
             }
         });
     }

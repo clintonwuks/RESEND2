@@ -72,7 +72,7 @@ public class Friends extends Fragment {
             searchView = getActivity().findViewById(R.id.search_view);
             RecyclerView.LayoutManager lManager = new LinearLayoutManager(requireActivity());
 
-            // create an array adapter for al_strings and set it on the listview
+            // create an array adapter for al_strings and set it on the recyclerview
             customArrayAdapter = new CustomArrayAdapter(requireContext(), users);
             lv_mainlist.setLayoutManager(lManager);
             lv_mainlist.setAdapter(customArrayAdapter);
