@@ -77,12 +77,9 @@ public class sendMoney extends AppCompatActivity {
             ref.get().addOnSuccessListener(task -> {
                 user = task.toObject(FireStoreUser.class);
 
-
-
-
                 if (user != null) {
                     if (user.wallet >= amount) {
-                        reSend(user, amount, uid);
+                        reSend(amount, uid);
 //                        if(reSend(user, amount));{
 //                        user.wallet -= amount;
 //                        ref.update("wallet", user.wallet)
@@ -101,7 +98,7 @@ public class sendMoney extends AppCompatActivity {
         }
     }
 
-    private void reSend(FireStoreUser user, double amount, String uid) {
+    private void reSend(double amount, String uid) {
          boolean val ;
        // String uid = fbUser.getUid();
         //RESEND DIALOG BOX
