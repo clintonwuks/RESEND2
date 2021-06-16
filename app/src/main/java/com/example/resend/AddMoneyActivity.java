@@ -89,7 +89,7 @@ public class AddMoneyActivity extends AppCompatActivity {
                 cvv
         );
         charge.setAmount(paystackAmount);
-        charge.setEmail("clintonwuks@gmail.com");
+        charge.setEmail("festusyuma@gmail.com");
         charge.setCard(card);
 
         PaystackSdk.chargeCard(this, charge, new Paystack.TransactionCallback() {
@@ -108,7 +108,7 @@ public class AddMoneyActivity extends AppCompatActivity {
             public void onError(Throwable error, Transaction transaction) {
                 Log.d(TAG, "onError: " + error.getLocalizedMessage());
                 Log.d(TAG, "onError: " + error);
-                // todo show error toast and end loader
+                // todo show error and end loader
             }
         });
     }
