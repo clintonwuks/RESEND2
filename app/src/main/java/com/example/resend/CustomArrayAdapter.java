@@ -1,13 +1,13 @@
 package com.example.resend;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,16 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.resend.models.firestore.FireStoreUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.google.gson.Gson;
-import com.google.protobuf.Any;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.ViewHolder> {
 
@@ -35,6 +29,7 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
     private List<String> friends;
     private List<String> request;
     private List<String> sentRequest;
+
 
     public CustomArrayAdapter(
             Context context,
@@ -74,9 +69,11 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
         private final TextView username;
         private final TextView frame;
         private final Button action;
+        private View view;
 
         public ViewHolder(View view) {
             super(view);
+            this.view=view;
             // Define click listener for the ViewHolder's View
 
             fullName = view.findViewById(R.id.fullName);
@@ -112,6 +109,8 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
 
         private void sendMoney(Context context, String userId) {
             // todo goto to the send money page (create a page with amount input and send button and link to that page here)
+            Intent intent = new Intent(context, sendMoney.class);
+            context.startActivity(intent);
             Log.v("APP_TEST", "Send money to " + userId);
         }
 

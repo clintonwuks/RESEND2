@@ -19,11 +19,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.resend.models.firestore.FireStoreUser;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 public class HomepageActivity extends AppCompatActivity {
@@ -90,6 +86,7 @@ public class HomepageActivity extends AppCompatActivity {
                         switch (id){
                             case R.id.buffer:
                                 Toast.makeText(HomepageActivity.this, item.getTitle().toString(), Toast.LENGTH_SHORT).show();
+
                                 break;
                             case R.id.logout:
                                 logout();
@@ -115,6 +112,7 @@ public class HomepageActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Transactions"));
         tabLayout.addTab(tabLayout.newTab().setText("Friends"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        setUserAcronym();
     }
 
     private void logout() {

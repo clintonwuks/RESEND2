@@ -89,7 +89,7 @@ public class AddMoneyActivity extends AppCompatActivity {
                 cvv
         );
         charge.setAmount(paystackAmount);
-        charge.setEmail("festusyuma@gmail.com");
+        charge.setEmail("clintonwuks@gmail.com");
         charge.setCard(card);
 
         PaystackSdk.chargeCard(this, charge, new Paystack.TransactionCallback() {
@@ -97,6 +97,7 @@ public class AddMoneyActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Transaction transaction) {
                 creditAccount(amount);
+
             }
 
             @Override

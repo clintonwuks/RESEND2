@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RESEND">
-        <activity android:name=".AddMoneyActivity"></activity>
+        <activity android:name=".sendMoney"></activity>
+        <activity android:name=".AddMoneyActivity" />
         <activity android:name=".LoadingPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
