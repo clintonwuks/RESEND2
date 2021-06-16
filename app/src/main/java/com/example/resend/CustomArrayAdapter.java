@@ -1,6 +1,8 @@
 package com.example.resend;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,20 +15,39 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.resend.models.firestore.FireStoreUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.gson.Gson;
+import com.google.protobuf.Any;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.ViewHolder> {
 
     private Context context;
     private ArrayList<FireStoreUser> users;
-    private ArrayList<String> friends;
-    private ArrayList<String> request;
+    private List<String> friends;
+    private List<String> request;
+    private List<String> sentRequest;
 
-    public CustomArrayAdapter(Context context, ArrayList<FireStoreUser> users) {
+    public CustomArrayAdapter(
+            Context context,
+            ArrayList<FireStoreUser> users,
+            List<String> friends,
+            List<String> request,
+            List<String> sentRequest
+    ) {
         this.context = context;
         this.users = users;
+        this.friends = friends;
+        this.request = request;
+        this.sentRequest = sentRequest;
     }
 
     @NonNull
@@ -40,7 +61,7 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindData(context, users.get(position), friends, request);
+        holder.bindData(context, users.get(position), friends, request, sentRequest);
     }
 
     @Override
@@ -67,35 +88,122 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
         public void bindData(
                 Context context,
                 FireStoreUser user,
-                ArrayList<String> friends,
-                ArrayList<String> request
+                List<String> friends,
+                List<String> request,
+                List<String> sentRequest
         ) {
             fullName.setText(user.fullName);
             username.setText(user.username);
             frame.setText(user.getUserAcronym());
 
-            /*if (friends.contains(user.uuid)) {
+            if (friends.contains(user.uuid)) {
                 action.setText(context.getString(R.string.send_money));
-                action.setOnClickListener(v -> sendMoney(user.uuid));
+                action.setOnClickListener(v -> sendMoney(context, user.uuid));
             } else if (request.contains(user.uuid)) {
                 action.setText(context.getString(R.string.accept_request));
-                action.setOnClickListener(v -> acceptRequest(user.uuid));
+                action.setOnClickListener(v -> acceptRequest(context, user.uuid));
+            } else if (sentRequest.contains(user.uuid)) {
+                action.setText(context.getString(R.string.pending_request));
             } else {
                 action.setText(context.getString(R.string.add_friend));
-                action.setOnClickListener(v -> addFriend(user.uuid));
-            }*/
+                action.setOnClickListener(v -> addFriend(context, user.uuid));
+            }
         }
 
-        private void sendMoney(String userId) {
+        private void sendMoney(Context context, String userId) {
+            // todo goto to the send money page (create a page with amount input and send button and link to that page here)
             Log.v("APP_TEST", "Send money to " + userId);
         }
 
-        private void acceptRequest(String userId) {
+        private void acceptRequest(Context context, String userId) {
             Log.v("APP_TEST", "Accepting request from " + userId);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FireStoreUser user = fetchUser(context);
+
+            CollectionReference ref = db.collection("Users");
+            ref.document(userId).get()
+                    .addOnSuccessListener(v -> {
+                        FireStoreUser addUser = v.toObject(FireStoreUser.class);
+
+                        if (addUser != null) {
+                            List<String> sentFriendRequest =
+                                    addUser.sentFriendRequest != null ? addUser.sentFriendRequest : new ArrayList<>();
+                            List<String> friends =
+                                    addUser.friends != null ? addUser.friends : new ArrayList<>();
+                            sentFriendRequest.removeIf(id -> id.equals(user.uuid));
+                            friends.add(user.uuid);
+
+
+                            ref.document(userId)
+                                    .update("sentFriendRequest", sentFriendRequest, "friends", friends)
+                                    .addOnSuccessListener(v1 -> {
+                                        user.friendRequest.removeIf(id -> id.equals(userId));
+                                        user.friends.add(userId);
+                                        db.collection("Users").document(user.uuid)
+                                                .update(
+                                                        "friendRequest", user.friendRequest,
+                                                        "friends", user.friends
+                                                )
+                                                .addOnSuccessListener(v2 -> {
+                                                    action.setText(context.getString(R.string.send_money));
+                                                    action.setOnClickListener(v3 -> sendMoney(context, user.uuid));
+                                                    updateUser(context, user);
+                                                });
+                                    });
+                        }
+                    });
         }
 
-        private void addFriend(String userId) {
+        private void addFriend(Context context, String userId) {
             Log.v("APP_TEST", "Adding as friend" + userId);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FireStoreUser user = fetchUser(context);
+
+            CollectionReference ref = db.collection("Users");
+            ref.document(userId).get()
+                    .addOnSuccessListener(v -> {
+                        FireStoreUser addUser = v.toObject(FireStoreUser.class);
+                        if (addUser != null) {
+                            List<String> friendRequest =
+                                    addUser.friendRequest != null ? addUser.friendRequest : new ArrayList<>();
+                            friendRequest.add(user.uuid);
+
+                            ref.document(userId)
+                                    .update("friendRequest", friendRequest)
+                                    .addOnSuccessListener(v1 -> {
+                                        user.sentFriendRequest.add(userId);
+                                        db.collection("Users").document(user.uuid)
+                                                .update("sentFriendRequest", user.sentFriendRequest)
+                                                .addOnSuccessListener(v2 -> {
+                                                    action.setText(context.getString(R.string.pending_request));
+                                                    action.setOnClickListener(null);
+                                                    updateUser(context, user);
+                                                });
+                                    });
+                        }
+                    });
+        }
+
+        private FireStoreUser fetchUser(Context context) {
+            Gson gson = new Gson();
+            String userKey = context.getString(R.string.user_key);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            
+            return gson.fromJson(
+                    preferences.getString(userKey, ""),
+                    FireStoreUser.class
+            );
+        }
+
+        private void updateUser(Context context, FireStoreUser user) {
+            Gson gson = new Gson();
+            String userKey = context.getString(R.string.user_key);
+            String userJson = gson.toJson(user);
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(userKey, userJson);
+            editor.apply();
         }
     }
 

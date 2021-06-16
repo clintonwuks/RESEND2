@@ -1,8 +1,10 @@
 package com.example.resend;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Window;
@@ -15,9 +17,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.resend.models.firestore.FireStoreUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth;
     private final String TAG = "APP_TEST";
+    private Gson gson;
+
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +53,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initElements();
 
+        gson = new Gson();
+        db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            gotoHomepage();
-        }
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 
         // import font
@@ -124,8 +135,34 @@ public class MainActivity extends AppCompatActivity {
 
     private void gotoHomepage() {
         Intent intent = new Intent(this, HomepageActivity.class);
-        startActivity(intent);
-        finishAffinity();
+        FirebaseUser fsUser = firebaseAuth.getCurrentUser();
+        if (fsUser != null) {
+            String uuid = fsUser.getUid();
+            Log.v(TAG, "uuid: " + uuid);
+            DocumentReference query = db.collection("Users").document(uuid);
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot res = task.getResult();
+
+                    if (res != null) {
+                        FireStoreUser user = res.toObject(FireStoreUser.class);
+                        String userKey = getString(R.string.user_key);
+                        String userJson = gson.toJson(user);
+
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(userKey, userJson);
+                        editor.apply();
+
+                        startActivity(intent);
+                        finishAffinity();
+                    } else {
+                        Log.v(TAG, "Error getting documents: ", task.getException());
+                    }
+                } else {
+                    Log.v(TAG, "Error getting documents: ", task.getException());
+                }
+            });
+        }
     }
 
 }

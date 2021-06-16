@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">RESEND</string>
     <string name="domain">resend.com</string>
+    <string name="user_key">user_key</string>
+    <string name="user_id_key">user_id_key</string>
     <string name="sign_up_hint">Don\'t have an account ? Sign Up</string>
     <string name="log_in">LOG IN</string>
     <string name="register">SIGN UP</string>
@@ -37,7 +39,8 @@
     <string name="profile_abb">%1$s</string>
     <string name="search">Search</string>
     <string name="jd">JD</string>
-    <string name="add_friend">ADD FRIEND</string>
-    <string name="send_money">SEND MONEY</string>
-    <string name="accept_request">ACCEPT REQUEST</string>
+    <string name="add_friend">ADD</string>
+    <string name="send_money">SEND</string>
+    <string name="accept_request">ACCEPT</string>
+    <string name="pending_request">PENDING</string>
 </resources>

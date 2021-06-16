@@ -1,7 +1,9 @@
 package com.example.resend;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 public class HomepageActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -35,15 +38,18 @@ public class HomepageActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private final String TAG = "APP_TEST";
 
-    private FireStoreUser user;
+    SharedPreferences preferences;
+    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
+
+        gson = new Gson();
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         initElements();
         if(firebaseAuth.getCurrentUser() == null) {
@@ -109,8 +115,6 @@ public class HomepageActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Transactions"));
         tabLayout.addTab(tabLayout.newTab().setText("Friends"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        fetchUser();
     }
 
     private void logout() {
@@ -123,45 +127,45 @@ public class HomepageActivity extends AppCompatActivity {
         finishAffinity();
     }
 
-    private void fetchUser() {
-        FirebaseUser fsUser = firebaseAuth.getCurrentUser();
-        if (fsUser != null) {
-            String uuid = fsUser.getUid();
-            Query query = db.collection("Users").whereEqualTo("uuid", uuid);
-            query.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()) {
-                    QuerySnapshot res = task.getResult();
+    private FireStoreUser fetchUser() {
+        String userKey = getString(R.string.user_key);
+        FireStoreUser user = gson.fromJson(
+                preferences.getString(userKey, ""),
+                FireStoreUser.class
+        );
 
-                    if (res != null && !res.isEmpty()) {
-                        DocumentSnapshot userSnapshot = res.getDocuments().get(0);
-                        String documentId = userSnapshot.getId();
-                        FireStoreUser user = userSnapshot.toObject(FireStoreUser.class);
-                        if(user != null) this.user = user;
-                        setUserAcronym();
-                    }
-                } else {
-                    Log.v(TAG, "Error getting documents: ", task.getException());
-                }
-            });
-        }
+        Log.v(TAG, "uuid: " + user);
+        if (user != null) return user; else gotoHomepage();
+
+        return null;
     }
 
     private void setUserAcronym() {
-        String [] SepName = user.fullName.split(" ");
-        char ch1, ch2;
-        String sh1, sh2, acr="";
-        ch1 = SepName[0].charAt(0);
-        ch2 = SepName[1].charAt(0);
+        FireStoreUser user = fetchUser();
 
-        sh1 = String.valueOf(ch1);
-        sh2 = String.valueOf(ch2);
-        acr = sh1.concat(sh2);
-        profile_abb.setText(getString(R.string.profile_abb, acr));
+        if (user != null) {
+            String [] SepName = user.fullName.split(" ");
+            char ch1, ch2;
+            String sh1, sh2, acr="";
+            ch1 = SepName[0].charAt(0);
+            ch2 = SepName[1].charAt(0);
+
+            sh1 = String.valueOf(ch1);
+            sh2 = String.valueOf(ch2);
+            acr = sh1.concat(sh2);
+            profile_abb.setText(getString(R.string.profile_abb, acr));
+        }
     }
 
     private void gotoAddMoney() {
         Log.v(TAG, "Clicked Add money");
         Intent intent = new Intent(this, AddMoneyActivity.class);
         startActivity(intent);
+    }
+
+    private void gotoHomepage() {
+        Intent intent = new Intent(this, HomepageActivity.class);
+        startActivity(intent);
+        finishAffinity();
     }
 }

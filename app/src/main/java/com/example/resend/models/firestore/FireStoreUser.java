@@ -1,6 +1,8 @@
 package com.example.resend.models.firestore;
 
-import com.example.resend.Friends;
+import androidx.annotation.NonNull;
+
+import com.example.resend.models.Friend;
 import com.example.resend.models.FriendRequest;
 import com.example.resend.models.Transaction;
 
@@ -13,9 +15,9 @@ public class FireStoreUser {
     public String username;
     public String dateOfBirth;
     public Double wallet = 0.0;
-    public List<FriendRequest> friendRequest = new ArrayList<>();
-    public List<Friends> friends = new ArrayList<>();
-    public List<Transaction> transactions = new ArrayList<>();
+    public List<String> friends = new ArrayList<>();
+    public List<String> friendRequest = new ArrayList<>();
+    public List<String> sentFriendRequest = new ArrayList<>();
 
     public FireStoreUser() {}
 
@@ -26,18 +28,11 @@ public class FireStoreUser {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public FireStoreUser(String uuid, String fullName, String username, String dateOfBirth, Double wallet) {
-        this.uuid = uuid;
-        this.fullName = fullName;
-        this.username = username;
-        this.dateOfBirth = dateOfBirth;
-        this.wallet = wallet;
-    }
-
     public String getUserAcronym() {
         return String.valueOf(this.fullName.charAt(0));
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "FireStoreUser{" +
@@ -46,9 +41,9 @@ public class FireStoreUser {
                 ", username='" + username + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", wallet=" + wallet +
-                ", friendRequest=" + friendRequest +
                 ", friends=" + friends +
-                ", transactions=" + transactions +
+                ", friendRequest=" + friendRequest +
+                ", sentFriendRequest=" + sentFriendRequest +
                 '}';
     }
 }
