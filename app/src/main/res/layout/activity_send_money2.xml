@@ -30,7 +30,7 @@
         tools:layout_editor_absoluteX="100dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/sendMoneyBtn"
         style="@style/authButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

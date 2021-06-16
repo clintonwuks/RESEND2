@@ -107,13 +107,21 @@ public class Friends extends Fragment {
 
     private void findUser(String username) {
         Log.v(TAG, username);
-        Query query = db.collection("Users").whereGreaterThanOrEqualTo("username", username);
-        query.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                QuerySnapshot res = task.getResult();
+        FireStoreUser user = fetchUser();
 
-                if (res != null && !res.isEmpty()) {
-                    List<FireStoreUser> users = res.toObjects(FireStoreUser.class);
+        if (user != null) {
+            Query query = db.collection("Users")
+                    .whereEqualTo("username", username.toLowerCase())
+                    .whereNotEqualTo("username", user.username);
+
+            query.get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    QuerySnapshot res = task.getResult();
+                    List<FireStoreUser> users =
+                            (res != null && !res.isEmpty())
+                                    ? res.toObjects(FireStoreUser.class)
+                                    : new ArrayList<>();
+
                     this.users.clear();
                     this.users.addAll(users);
                     customArrayAdapter.notifyDataSetChanged();
@@ -121,11 +129,11 @@ public class Friends extends Fragment {
                     for (FireStoreUser u : users) {
                         Log.v(TAG, u.toString());
                     }
+                } else {
+                    Log.v(TAG, "Error getting documents: ", task.getException());
                 }
-            } else {
-                Log.v(TAG, "Error getting documents: ", task.getException());
-            }
-        });
+            });
+        }
     }
 
     private FireStoreUser fetchUser() {

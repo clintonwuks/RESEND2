@@ -1,7 +1,10 @@
 package com.example.resend;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,10 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.resend.models.firestore.FireStoreUser;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import co.paystack.android.Paystack;
 import co.paystack.android.PaystackSdk;
@@ -34,6 +40,9 @@ public class AddMoneyActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private final String TAG = "APP_TEST";
 
+    private SharedPreferences preferences;
+    private Gson gson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +52,8 @@ public class AddMoneyActivity extends AppCompatActivity {
         PaystackSdk.initialize(this);
         PaystackSdk.setPublicKey("pk_test_87b43cb03070ea4c4f584656222db9aa18ff7472");
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        gson = new Gson();
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null) {
@@ -65,7 +76,7 @@ public class AddMoneyActivity extends AppCompatActivity {
     }
 
     private void chargeCard() {
-        double amount = Integer.parseInt(amountInput.getText().toString());
+        double amount = Double.parseDouble(amountInput.getText().toString());
         int paystackAmount = (int) amount * 100;
 
         // todo validate input not empty here
@@ -96,7 +107,7 @@ public class AddMoneyActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(Transaction transaction) {
-                creditAccount(amount);
+                creditAccount((double) paystackAmount / 100);
 
             }
 
@@ -115,33 +126,43 @@ public class AddMoneyActivity extends AppCompatActivity {
     }
 
     private void creditAccount(Double amount) {
-        String uuid = firebaseAuth.getCurrentUser().getUid();
-        Query query = db.collection("Users").whereEqualTo("uuid", uuid);
-        query.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                QuerySnapshot res = task.getResult();
+        FirebaseUser fbUser = firebaseAuth.getCurrentUser();
 
-                if (res != null && !res.isEmpty()) {
-                    DocumentSnapshot userSnapshot = res.getDocuments().get(0);
-                    String documentId = userSnapshot.getId();
-                    FireStoreUser user = userSnapshot.toObject(FireStoreUser.class);
+        if (fbUser != null) {
+            String uuid = fbUser.getUid();
+            DocumentReference query = db.collection("Users").document(uuid);
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot res = task.getResult();
 
-                    if(user != null) {
-                        user.wallet += amount;
-                        db.collection("Users").document(documentId).set(user)
-                                .addOnSuccessListener(v -> {
-                                    goToHomepage();
-                                })
-                                .addOnFailureListener(e -> {
-                                    // todo show error and end loader
-                                    Log.v(TAG, "Error getting documents: ", e);
-                                });
+                    if (res != null) {
+                        FireStoreUser user = res.toObject(FireStoreUser.class);
+
+                        if (user != null) {
+                            user.wallet += amount;
+                            query.update("wallet", user.wallet)
+                                    .addOnSuccessListener(task2 -> {
+                                        updateUser(user);
+                                        goToHomepage();
+                                    });
+                        }
+                    } else {
+                        Log.v(TAG, "Error getting documents: ", task.getException());
                     }
+                } else {
+                    Log.v(TAG, "Error getting documents: ", task.getException());
                 }
-            } else {
-                Log.v(TAG, "Error getting documents: ", task.getException());
-            }
-        });
+            });
+        }
+    }
+
+    private void updateUser(FireStoreUser user) {
+        String userKey = getString(R.string.user_key);
+        String userJson = gson.toJson(user);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(userKey, userJson);
+        editor.apply();
     }
 
     private void goToLogin() {
