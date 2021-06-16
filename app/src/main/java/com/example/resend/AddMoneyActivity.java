@@ -76,7 +76,7 @@ public class AddMoneyActivity extends AppCompatActivity {
     }
 
     private void chargeCard() {
-        double amount = Integer.parseInt(amountInput.getText().toString());
+        double amount = Double.parseDouble(amountInput.getText().toString());
         int paystackAmount = (int) amount * 100;
 
         // todo validate input not empty here
@@ -107,7 +107,7 @@ public class AddMoneyActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(Transaction transaction) {
-                creditAccount(amount);
+                creditAccount((double) paystackAmount / 100);
 
             }
 
