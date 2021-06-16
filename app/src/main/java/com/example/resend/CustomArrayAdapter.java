@@ -108,8 +108,8 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
         }
 
         private void sendMoney(Context context, String userId) {
-            // todo goto to the send money page (create a page with amount input and send button and link to that page here)
             Intent intent = new Intent(context, sendMoney.class);
+            intent.putExtra("recipientId", userId);
             context.startActivity(intent);
             Log.v("APP_TEST", "Send money to " + userId);
         }
