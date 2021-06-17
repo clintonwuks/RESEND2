@@ -14,12 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.resend.models.firestore.FireStoreUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
+import java.time.LocalDate;
 
 import co.paystack.android.Paystack;
 import co.paystack.android.PaystackSdk;
@@ -107,8 +109,7 @@ public class AddMoneyActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(Transaction transaction) {
-                creditAccount((double) paystackAmount / 100);
-
+                creditAccount((double) paystackAmount / 100, transaction.getReference());
             }
 
             @Override
@@ -125,13 +126,13 @@ public class AddMoneyActivity extends AppCompatActivity {
         });
     }
 
-    private void creditAccount(Double amount) {
+    private void creditAccount(Double amount, String reference) {
         FirebaseUser fbUser = firebaseAuth.getCurrentUser();
 
         if (fbUser != null) {
             String uuid = fbUser.getUid();
-            DocumentReference query = db.collection("Users").document(uuid);
-            query.get().addOnCompleteListener(task -> {
+            DocumentReference ref = db.collection("Users").document(uuid);
+            ref.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot res = task.getResult();
 
@@ -140,8 +141,9 @@ public class AddMoneyActivity extends AppCompatActivity {
 
                         if (user != null) {
                             user.wallet += amount;
-                            query.update("wallet", user.wallet)
+                            ref.update("wallet", user.wallet)
                                     .addOnSuccessListener(task2 -> {
+                                        addTransaction(ref, amount, reference);
                                         updateUser(user);
                                         goToHomepage();
                                     });
@@ -154,6 +156,24 @@ public class AddMoneyActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void addTransaction(DocumentReference userRef, Double amount, String reference) {
+        com.example.resend.models.Transaction transaction = new com.example.resend.models.Transaction(
+                "CARD CREDIT",
+                amount,
+                LocalDate.now().toString(),
+                reference
+        );
+
+        CollectionReference transactionReference =  userRef.collection("Transactions");
+        transactionReference.add(transaction)
+                .addOnSuccessListener(task -> {
+                    Log.v(TAG, "Document added" + task.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error adding document", e);
+                });
     }
 
     private void updateUser(FireStoreUser user) {
