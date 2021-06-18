@@ -9,6 +9,8 @@ public class Transaction {
     public String status = "success";
     public String reference = "";
 
+    public Transaction() {}
+
     public Transaction(String type, Double amount, String date) {
         this.type = type;
         this.amount = amount;

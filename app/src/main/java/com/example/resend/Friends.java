@@ -25,14 +25,12 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Friends extends Fragment {
     private RecyclerView lv_mainlist;
     private SearchView searchView;
     private ArrayList<FireStoreUser> users;
-    private CustomArrayAdapter customArrayAdapter;
+    private FriendsListAdapter friendsListAdapter;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
@@ -91,7 +89,7 @@ public class Friends extends Fragment {
                 Log.d(TAG, "request: " + request.toString());
                 Log.d(TAG, "pending request: " + sentRequest.toString());
 
-                customArrayAdapter = new CustomArrayAdapter(
+                friendsListAdapter = new FriendsListAdapter(
                         requireContext(),
                         users,
                         friends,
@@ -99,7 +97,7 @@ public class Friends extends Fragment {
                         sentRequest
                 );
                 lv_mainlist.setLayoutManager(lManager);
-                lv_mainlist.setAdapter(customArrayAdapter);
+                lv_mainlist.setAdapter(friendsListAdapter);
             }
             //fetchUser();
         }
@@ -124,7 +122,7 @@ public class Friends extends Fragment {
 
                     this.users.clear();
                     this.users.addAll(users);
-                    customArrayAdapter.notifyDataSetChanged();
+                    friendsListAdapter.notifyDataSetChanged();
 
                     for (FireStoreUser u : users) {
                         Log.v(TAG, u.toString());

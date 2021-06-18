@@ -22,7 +22,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.ViewHolder> {
+public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.ViewHolder> {
 
     private Context context;
     private ArrayList<FireStoreUser> users;
@@ -31,7 +31,7 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
     private List<String> sentRequest;
 
 
-    public CustomArrayAdapter(
+    public FriendsListAdapter(
             Context context,
             ArrayList<FireStoreUser> users,
             List<String> friends,
