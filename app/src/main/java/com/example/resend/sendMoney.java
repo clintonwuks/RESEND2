@@ -13,12 +13,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.resend.models.Transaction;
 import com.example.resend.models.firestore.FireStoreUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
+
+import java.time.LocalDate;
 
 public class sendMoney extends AppCompatActivity {
 
@@ -75,7 +79,7 @@ public class sendMoney extends AppCompatActivity {
             String uid = fbUser.getUid();
             DocumentReference ref = db.collection("Users").document(uid);
             ref.get().addOnSuccessListener(task -> {
-                user = task.toObject(FireStoreUser.class);
+            user = task.toObject(FireStoreUser.class);
 
                 if (user != null) {
                     if (user.wallet >= amount) {
@@ -100,54 +104,47 @@ public class sendMoney extends AppCompatActivity {
 
     private void reSend(double amount, String uid) {
          boolean val ;
-       // String uid = fbUser.getUid();
         //RESEND DIALOG BOX
         // we need a builder to create the dialog for us
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-// set the title and the message to be displayed on the dialog
+
+        // set the title and the message to be displayed on the dialog
         builder.setTitle("Resend Dialog");
         DocumentReference ref = db.collection("Users").document(uid);
         DocumentReference ref2 = db.collection("Users").document(recipientId);
+
         ref2.get().addOnSuccessListener(task -> {
             recipient = task.toObject(FireStoreUser.class);
-
             if (recipient != null) {
                 AlertDialog.Builder builder1 = builder.setMessage("You have sent £" + amount +" to "+ recipient.fullName);
-               builder1.create();
-               builder1.show();
-
+                builder1.create();
+                builder1.show();
             } else Log.v(TAG, "User not found");
         });
 
-// add in a positive button here
-
-        builder.setNegativeButton("Revert", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                //cancel and go back to send money activity
-                dialog.cancel();
-                goToHomepage();
-            }
+        // add in a positive button here
+        builder.setNegativeButton("Revert", (dialog, which) -> {
+            //cancel and go back to send money activity
+            dialog.cancel();
+            goToHomepage();
         });
-// add in a negative button here
-        builder.setPositiveButton("Sure", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
 
-                //continue send
-                user.wallet -= amount;
-                ref.update("wallet", user.wallet)
-                        .addOnSuccessListener(task2 -> {
-                            //reSend(amount);
-                            creditRecipient(amount);
-                            updateUser(user);
+        // add in a negative button here
+        builder.setPositiveButton("Sure", (dialog, which) -> {
+            //continue send
+            user.wallet -= amount;
+            ref.update("wallet", user.wallet)
+                    .addOnSuccessListener(task2 -> {
+                        //reSend(amount);
+                        addTransaction(ref, "DEBIT", amount);
+                        creditRecipient(amount);
+                        updateUser(user);
 
-                        });
+                    });
 
-            }
         });
-// create the dialog and display it
+
+        // create the dialog and display it
         AlertDialog dialog = builder.create();
         dialog.show();
 
@@ -163,10 +160,28 @@ public class sendMoney extends AppCompatActivity {
                 recipient.wallet += amount;
                 ref.update("wallet", recipient.wallet)
                         .addOnSuccessListener(task2 -> {
+                            addTransaction(ref, "CREDIT", amount);
                             goToHomepage();
                         });
             } else Log.v(TAG, "User not found");
         });
+    }
+
+    private void addTransaction(DocumentReference userRef, String type, Double amount) {
+        Transaction transaction = new Transaction(
+                type,
+                amount,
+                LocalDate.now().toString()
+        );
+
+        CollectionReference transactionReference =  userRef.collection("Transactions");
+        transactionReference.add(transaction)
+                .addOnSuccessListener(task -> {
+                    Log.v(TAG, "Document added" + task.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error adding document", e);
+                });
     }
 
     private void goToHomepage() {

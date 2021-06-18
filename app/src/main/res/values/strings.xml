@@ -43,4 +43,10 @@
     <string name="send_money">SEND</string>
     <string name="accept_request">ACCEPT</string>
     <string name="pending_request">PENDING</string>
+    <string name="credit">CREDIT</string>
+    <string name="card_credit">CARD CREDIT</string>
+    <string name="debit">DEBIT</string>
+    <string name="transaction_amount">Amount: %1$.2f</string>
+    <string name="date">23/07/1998</string>
+    <string name="refresh">Refresh</string>
 </resources>
